@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const gravatar = require("gravatar");
 const path = require("path");
 const fs = require("fs/promises");
 
@@ -26,12 +25,10 @@ const register = async (req, res, next) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const avatarURL = gravatar.url(email);
 
     const newUser = await User.create({
       ...req.body,
       password: hashPassword,
-      avatarURL,
     });
 
     res.status(201).json({
