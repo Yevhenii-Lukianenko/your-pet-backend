@@ -94,6 +94,31 @@ const logout = async (req, res, next) => {
   }
 };
 
+const updateProfile = async (req, res, next) => {
+  try {
+    const validationRequest = schema.updateSchema.validate(req.body);
+    if (validationRequest.error) {
+      throw HttpError(400, validationRequest.error.message);
+    }
+
+    const { _id } = req.user;
+    const { name, email, phone, birthday, city } = req.body;
+
+    const updates = {};
+    if (name !== undefined) updates.name = name;
+    if (email !== undefined) updates.email = email;
+    if (phone !== undefined) updates.phone = phone;
+    if (birthday !== undefined) updates.birthday = birthday;
+    if (city !== undefined) updates.city = city;
+
+    await User.findByIdAndUpdate(_id, updates);
+
+    res.json();
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateAvatar = async (req, res, next) => {
   try {
     const { _id } = req.user;
@@ -115,5 +140,6 @@ module.exports = {
   login,
   getCurrent,
   logout,
+  updateProfile,
   updateAvatar,
 };

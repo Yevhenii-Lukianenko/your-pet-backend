@@ -4,7 +4,7 @@ const avatarProcessing = async (req, res, next) => {
   const { file } = req;
   const image = await jimp.read(file.path);
 
-  await image.resize(250, 250).quality(75);
+  await image.resize(182, 182).quality(75);
 
   await image.write(file.path);
 
