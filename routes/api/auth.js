@@ -27,7 +27,7 @@ router.patch(
 );
 
 router.patch(
-  "/avatars",
+  "/profile/avatar",
   authenticate,
   upload.single("avatar"),
   imageProcessing,

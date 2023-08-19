@@ -103,7 +103,7 @@ const updateAvatar = async (req, res, next) => {
   const imageUrl = await uploadImageToCloudinary(uploadedImage);
   await User.findByIdAndUpdate(_id, { avatarURL: imageUrl.url });
 
-  res.json(imageUrl.url);
+  res.json({ avatarURL: imageUrl.url });
 };
 
 module.exports = {
