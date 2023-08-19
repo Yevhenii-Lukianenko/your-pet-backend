@@ -8,6 +8,7 @@ const swaggerDocument = require("./swagger.json");
 
 const authRouter = require("./routes/api/auth");
 const petsRouter = require("./routes/api/pets");
+const noticesRouter = require("./routes/api/notices");
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/pets", petsRouter);
-
+app.use("/api/notices", noticesRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
