@@ -6,7 +6,7 @@ const {
   authenticate,
   validateBody,
   upload,
-  avatarProcessing,
+  imageProcessing,
 } = require("../../middlewares");
 
 const { schemas } = require("../../models/user");
@@ -30,7 +30,7 @@ router.patch(
   "/avatars",
   authenticate,
   upload.single("avatar"),
-  avatarProcessing,
+  imageProcessing,
   user.updateAvatar
 );
 
