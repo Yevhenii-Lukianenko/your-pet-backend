@@ -17,7 +17,7 @@ const register = async (req, res, next) => {
       throw HttpError(400, validationRequest.error.message);
     }
 
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const user = await User.findOne({ email });
 
     if (user) {
@@ -27,7 +27,8 @@ const register = async (req, res, next) => {
     const hashPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      ...req.body,
+      name,
+      email: email.toLowerCase(),
       password: hashPassword,
     });
 
@@ -49,7 +50,7 @@ const login = async (req, res, next) => {
     }
 
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user) {
       throw HttpError(401, "Email or password is wrong");
@@ -76,8 +77,8 @@ const login = async (req, res, next) => {
 
 const getCurrent = async (req, res, next) => {
   try {
-    const { email } = req.user;
-    res.json({ email });
+    const { name, email, phone, birthday, city } = req.user;
+    res.json({ name, email, phone, birthday, city });
   } catch (error) {
     next(error);
   }
@@ -104,16 +105,22 @@ const updateProfile = async (req, res, next) => {
     const { _id } = req.user;
     const { name, email, phone, birthday, city } = req.body;
 
+    const user = await User.findOne({ email: email.toLowerCase() });
+
+    if (user) {
+      throw HttpError(409, "Email in use");
+    }
+
     const updates = {};
     if (name !== undefined) updates.name = name;
-    if (email !== undefined) updates.email = email;
+    if (email !== undefined) updates.email = email.toLowerCase();
     if (phone !== undefined) updates.phone = phone;
     if (birthday !== undefined) updates.birthday = birthday;
     if (city !== undefined) updates.city = city;
 
     await User.findByIdAndUpdate(_id, updates);
 
-    res.json();
+    res.json(updates);
   } catch (error) {
     next(error);
   }
