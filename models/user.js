@@ -57,6 +57,6 @@ const updateSchema = joi
 
 const User = model("user", userSchema);
 
-const schema = { registerSchema, loginSchema, updateSchema };
+const schemas = { registerSchema, loginSchema, updateSchema };
 
-module.exports = { User, schema };
+module.exports = { User, schemas };
