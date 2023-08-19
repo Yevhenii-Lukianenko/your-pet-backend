@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs/promises");
+const { uploadImageToCloudinary } = require("../utils");
 
 const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
@@ -97,10 +98,12 @@ const updateAvatar = async (req, res, next) => {
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarsDir, filename);
   await fs.rename(tempUpload, resultUpload);
-  const avatarURL = path.join("avatars", filename);
-  await User.findByIdAndUpdate(_id, { avatarURL });
+  const uploadedImage = path.join("public/avatars", filename);
 
-  res.json({ avatarURL });
+  const imageUrl = await uploadImageToCloudinary(uploadedImage);
+  await User.findByIdAndUpdate(_id, { avatarURL: imageUrl.url });
+
+  res.json({ avatarURL: imageUrl.url });
 };
 
 module.exports = {
