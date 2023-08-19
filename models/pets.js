@@ -1,6 +1,8 @@
 const {Schema, model} = require("mongoose");
 const Joi = require('joi');
 
+const dateReg = /^\d{2}-\d{2}-\d{4}$/;
+
 const petsSchema = new Schema({
     name: {
         type: String,
@@ -8,7 +10,7 @@ const petsSchema = new Schema({
     },
     dateOfBirth: {
         type: String,
-        match: /^\d{2}-\d{2}-\d{4}$/,
+        match: dateReg,
         required: [true, "Set birthday for pet"],
     },
     type: {
@@ -17,7 +19,7 @@ const petsSchema = new Schema({
     },
     comments: {
         type: String,
-        // required: true,
+        required: true,
     }, 
     avatarURL : {
         type: String,
@@ -37,6 +39,7 @@ const addSchema = Joi.object({
     .required()
     .messages({ "any.required": "missing required fields" }),
     dateOfBirth: Joi.string()
+    .pattern(dateReg)
     .required()
     .messages({ "any.required": "missing required fields" }),
 
@@ -45,23 +48,13 @@ const addSchema = Joi.object({
     .messages({ "any.required": "missing required fields" }),
 
     comments: Joi.string()
-    // .required()
-    // .messages({ "any.required": "missing required fields" })
+    .required()
+    .messages({ "any.required": "missing required fields" })
     ,
 });
 
-const updateFavoriteSchema =Joi.object({
-
-});
-
-const deleteSchema = Joi.object({
-
-})
-
 const schemas = {
-    addSchema,
-    updateFavoriteSchema,
-    deleteSchema
+    addSchema
 };
 
 const Pets = model('pets', petsSchema);
