@@ -2,6 +2,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs/promises");
+const {
+  uploadImageToCloudinary,
+  deleteImageFromCloudinary,
+} = require("../utils");
 
 const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
@@ -92,15 +96,22 @@ const updateProfile = async (req, res, next) => {
 };
 
 const updateAvatar = async (req, res, next) => {
-  const { _id } = req.user;
+  const { _id, avatarURL } = req.user;
   const { path: tempUpload, originalname } = req.file;
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarsDir, filename);
   await fs.rename(tempUpload, resultUpload);
-  const avatarURL = path.join("avatars", filename);
-  await User.findByIdAndUpdate(_id, { avatarURL });
+  const uploadedImage = path.join("public/avatars", filename);
 
-  res.json({ avatarURL });
+  const image = await uploadImageToCloudinary(uploadedImage);
+  await User.findByIdAndUpdate(_id, { avatarURL: image.url });
+
+  if (avatarURL) {
+    const prevAvatarId = avatarURL.split("/").pop().slice(0, -4);
+    await deleteImageFromCloudinary(prevAvatarId);
+  }
+
+  res.json({ avatarURL: image.url });
 };
 
 module.exports = {

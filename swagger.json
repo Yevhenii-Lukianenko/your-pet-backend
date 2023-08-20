@@ -200,6 +200,62 @@
         }
       }
     },
+    "/auth/profile/avatar": {
+      "patch": {
+        "tags": ["Auth"],
+        "summary": "Updates avatar of the current user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The token issued to the current user."
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "avatar"
+                  },
+                  "value": {
+                    "type": "file",
+                    "description": "image.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
     "/pets": {
       "post": {
         "tags": ["Pets"],
@@ -409,6 +465,19 @@
           "phone": "+380991122333",
           "birthday": "01.02.1999",
           "city": "Sumy"
+        }
+      },
+      "AvatarResponse": {
+        "type": "object",
+        "properties": {
+          "avatarURL": {
+            "type": "string",
+            "description": "User's avatar url",
+            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+          }
+        },
+        "example": {
+          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
         }
       },
       "AddPetsRequest": {
