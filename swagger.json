@@ -255,6 +255,86 @@
           }
         }
       }
+    },
+    "/api/notices/category/{category}": {
+      "get": {
+        "tags": ["Notices"],
+        "summary": "Get all notices by search query and category",
+        "parameters": [{
+          "in": "path",
+          "name": "category",
+          "required": true,
+          "type":  "string",
+          "description": "Notices category"
+        }, 
+        {
+          "in": "query",
+          "name": "search",
+          "type":  "string",
+          "description": "Search word"
+        },
+        {
+          "in": "query",
+          "name": "page",
+          "type":  "number",
+          "description": "Page number"
+        }, 
+        {
+          "in": "query",
+          "name": "limit",
+          "type":  "number",
+          "description": "Number of notices per page"
+        }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllNoticesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/notices/{noticeId}": {
+      "get": {
+        "tags": ["Notices"],
+        "summary": "Get by id notice",
+        "parameters": [{
+          "in": "path",
+          "name": "noticeId",
+          "required": true,
+          "type":  "string",
+          "description": "Notice's id"
+        }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetByIdNoticeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
 
@@ -377,14 +457,188 @@
         "example": {
           "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
         }
+      },
+      "GetAllNoticesResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Notice's id",
+              "example": "64e10d144a3a60fc7905bf79"
+            },
+            "category": {
+              "type": "string",
+              "description": "Notice's category",
+              "example": "sell"
+            },
+            "title": {
+              "type": "string",
+              "description": "Notice's title",
+              "example": "Reliable friend"
+            },
+            "name": {
+              "type": "string",
+              "description": "Pet's name",
+              "example": "Nice ones"
+            },
+            "type": {
+              "type": "string",
+              "description": "Pet's type",
+              "example": "German Shepherd"
+            },
+            "avatarURL": {
+              "type": "string",
+              "description": "Pet's avatar url",
+              "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+            },
+            "location": {
+              "type": "string",
+              "description": "Pet's location",
+              "example": "Sumy"
+            },
+            "birthday": {
+              "type": "string",
+              "description": "Pet's birthday",
+              "example": "15-04-2015"
+            },
+            "sex": {
+              "type": "string",
+              "description": "Pet's gender",
+              "example": "female"
+            },
+            "comment": {
+              "type": "string",
+              "description": "Notice's comment",
+              "example": "Active dog"
+            },
+            "price": {
+              "type": "number",
+              "description": "Pet's price",
+              "example": 1000
+            },
+            "owner": {
+              "type": "string",
+              "description": "User's id who created the notice",
+              "example": "64e0e0bcc4d8d3a91d3aa90c"
+            }
+          }
+        },
+        "example": [{
+          "_id": "64e10d144a3a60fc7905bf79",
+          "category": "sell",
+          "title": "Reliable friend",
+          "name": "Nice ones",
+          "type": "German Shepherd",
+          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+          "location": "Sumy",
+          "birthday": "15-04-2015",
+          "sex": "female",
+          "comment": "Active dog",
+          "price": 1000,
+          "owner": "64e0e0bcc4d8d3a91d3aa90c"
+        },
+        {
+          "_id": "64e103c48f5f51dbeffcc9cb",
+          "category": "lost-found",
+          "title": "A cheerful friend",
+          "name": "Point",
+          "type": "Cat",
+          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+          "location": "Sumy",
+          "birthday": "28-08-2022",
+          "sex": "female",
+          "comment": "Domestic cat",
+          "owner": "64e0e0bcc4d8d3a91d3aa90c"
+        }]
+      },
+      "GetByIdNoticeResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Notice's id",
+            "example": "64e10d144a3a60fc7905bf79"
+          },
+          "category": {
+            "type": "string",
+            "description": "Notice's category",
+            "example": "sell"
+          },
+          "title": {
+            "type": "string",
+            "description": "Notice's title",
+            "example": "Reliable friend"
+          },
+          "name": {
+            "type": "string",
+            "description": "Pet's name",
+            "example": "Nice ones"
+          },
+          "type": {
+            "type": "string",
+            "description": "Pet's type",
+            "example": "German Shepherd"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "Pet's avatar url",
+            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+          },
+          "location": {
+            "type": "string",
+            "description": "Pet's location",
+            "example": "Sumy"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "Pet's birthday",
+            "example": "15-04-2015"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Pet's gender",
+            "example": "female"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Notice's comment",
+            "example": "Active dog"
+          },
+          "price": {
+            "type": "number",
+            "description": "Pet's price",
+            "example": 1000
+          },
+          "owner": {
+            "type": "string",
+            "description": "User's id who created the notice",
+            "example": "64e0e0bcc4d8d3a91d3aa90c"
+          }    
+        },
+        "example": {
+          "_id": "64e10d144a3a60fc7905bf79",
+          "category": "sell",
+          "title": "Reliable friend",
+          "name": "Nice ones",
+          "type": "German Shepherd",
+          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+          "location": "Sumy",
+          "birthday": "15-04-2015",
+          "sex": "female",
+          "comment": "Active dog",
+          "price": 1000,
+          "owner": "64e0e0bcc4d8d3a91d3aa90c"
+        }
+      }    
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
-    }
-  },
-  "securitySchemes": {
-    "Bearer": {
-      "type": "http",
-      "scheme": "bearer",
-      "bearerFormat": "JWT"
     }
   }
 }
