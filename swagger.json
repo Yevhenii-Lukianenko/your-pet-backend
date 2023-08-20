@@ -199,6 +199,108 @@
           }
         }
       }
+    },
+    "/pets": {
+      "post": {
+        "tags": ["Pets"],
+        "summary": "Add a new pet",
+        "parameters": [{
+          "name": "Authorization",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "format": "bearer"
+          },
+          "description": "The usesr's token for add pet."
+        }],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Add's pet object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPetsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddPetsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Pets"],
+        "summary": "Get all pets",
+        "parameters": [{
+          "name": "Authorization",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "format": "bearer"
+          },
+          "description": "The usesr's token for get all pet."
+        }],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPetsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "/pets/:id": {
+      "delete": {
+        "tags": ["Pets"],
+        "summary": "Delete pet by id",
+        "parameters": [{
+          "name": "Authorization",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "format": "bearer"
+          },
+          "description": "The usesr's token for delete pet."
+        }],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletePetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
     }
   },
 
@@ -307,6 +409,101 @@
           "phone": "+380991122333",
           "birthday": "01.02.1999",
           "city": "Sumy"
+        }
+      },
+      "AddPetsRequest": {
+        "type": "object",
+        "required": ["name", "dateOfBirth", "type", "comments"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Pet's name",
+            "example": "Rada"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Pet's birthday",
+            "example": "12-12-2012"
+          },
+          "type": {
+            "type": "string",
+            "description": "Pets's type",
+            "example": "Pomeranian"
+          },
+          "comments": {
+            "type": "string",
+            "description": "Some comments about pet",
+            "example": "Beautiful and clever girl"
+          }
+        }
+      },
+      "AddPetsResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Pet's name",
+            "example": "Rada"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Pet's birthday",
+            "example": "12-12-2012"
+          },
+          "type": {
+            "type": "string",
+            "description": "Pets's type",
+            "example": "Pomeranian"
+          },
+          "comments": {
+            "type": "string",
+            "description": "Some comments about pet",
+            "example": "Beautiful and clever girl"
+          }
+        },
+        "example": {
+          "name": "Rada"
+        }
+      },
+     
+      "GetPetsResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Pet's email",
+            "example": "Rada"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Pet's birthday",
+            "example": "12-12-2012"
+          },
+          "type": {
+            "type": "string",
+            "description": "Pets's type",
+            "example": "Pomeranian"
+          },
+          "comments": {
+            "type": "string",
+            "description": "Some comments about pet",
+            "example": "Beautiful and clever girl"
+          }
+        },
+        "example": {
+          "name": "Rada",
+          "dateOfBirth": "12-12-2012",
+          "type": "Pomeranian",
+          "comments": "Beautiful and clever girl"
+        }
+      },
+      "DeletePetResponse" : {
+        "type": "object",
+        "properties": {
+           "message": "Delete success"
+        },
+        "example": {
+          "message": "Delete success"
         }
       }
     }
