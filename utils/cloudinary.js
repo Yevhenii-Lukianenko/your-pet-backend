@@ -10,10 +10,12 @@ cloudinary.config({
 const uploadImageToCloudinary = async (file) =>
   await cloudinary.uploader.upload(file, (error, result) => {
     if (error) {
-      console.error(error);
       throw HttpError(400, error.message);
     }
     return result;
   });
 
-module.exports = uploadImageToCloudinary;
+const deleteImageFromCloudinary = async (id) =>
+  await cloudinary.uploader.destroy(id);
+
+module.exports = { uploadImageToCloudinary, deleteImageFromCloudinary };
