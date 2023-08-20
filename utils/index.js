@@ -1,3 +1,6 @@
-const uploadImageToCloudinary = require("./uploadImageToCloudinary");
+const {
+  uploadImageToCloudinary,
+  deleteImageFromCloudinary,
+} = require("./cloudinary");
 
-module.exports = { uploadImageToCloudinary };
+module.exports = { uploadImageToCloudinary, deleteImageFromCloudinary };
