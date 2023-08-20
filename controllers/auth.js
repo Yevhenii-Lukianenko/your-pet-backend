@@ -1,7 +1,5 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const path = require("path");
-const fs = require("fs/promises");
 const {
   uploadImageToCloudinary,
   deleteImageFromCloudinary,
@@ -11,7 +9,6 @@ const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
 
 const { SECRET_KEY } = process.env;
-const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -97,13 +94,9 @@ const updateProfile = async (req, res, next) => {
 
 const updateAvatar = async (req, res, next) => {
   const { _id, avatarURL } = req.user;
-  const { path: tempUpload, originalname } = req.file;
-  const filename = `${_id}_${originalname}`;
-  const resultUpload = path.join(avatarsDir, filename);
-  await fs.rename(tempUpload, resultUpload);
-  const uploadedImage = path.join("public/avatars", filename);
+  const { path: tempUpload } = req.file;
 
-  const image = await uploadImageToCloudinary(uploadedImage);
+  const image = await uploadImageToCloudinary(tempUpload);
   await User.findByIdAndUpdate(_id, { avatarURL: image.url });
 
   if (avatarURL) {
