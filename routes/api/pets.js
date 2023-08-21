@@ -13,7 +13,10 @@ router.get("/", authenticate, pets.getAll);
 
 router.post("/", authenticate, validateBody(schemas.addSchema), upload.single("avatarPet"), imageProcessing, pets.add);
 
+// router.post("/", authenticate, validateBody(schemas.addSchema), pets.add);
+
 // router.post("/:id", authenticate, upload.single("avatarPet"), imageProcessing, pets.addImagePet);
+
 
 router.delete("/:id", authenticate, pets.remove)
 
