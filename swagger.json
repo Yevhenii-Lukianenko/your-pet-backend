@@ -450,6 +450,112 @@
         }
       }
     },
+    "/api/notices/{noticeId}/favorite": {
+      "patch": {
+        "tags": ["Notices"],
+        "summary": "Add notice in favorites",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "type": "string",
+            "in": "header",
+            "description": "The token issued to the current user."
+          },
+          {
+          "in": "path",
+          "name": "noticeId",
+          "required": true,
+          "type":  "string",
+          "description": "Notice's id"
+        }],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddNoticeFavoriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
+          "401": {
+              "description": "Not authorized"
+            },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/notices/{noticeId}/nofavorite": {
+      "patch": {
+        "tags": ["Notices"],
+        "summary": "Remove notice from favorites",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "type": "string",
+            "in": "header",
+            "description": "The token issued to the current user."
+          },
+          {
+          "in": "path",
+          "name": "noticeId",
+          "required": true,
+          "type":  "string",
+          "description": "Notice's id"
+        }],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveNoticeFavoriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
+          "401": {
+              "description": "Not authorized"
+            },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/notices": {
       "post": {
         "tags": ["Notices"],
@@ -933,6 +1039,32 @@
           "comment": "Active dog",
           "price": 1000,
           "owner": "64e0e0bcc4d8d3a91d3aa90c"
+        }
+      },
+      "AddNoticeFavoriteResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "UserId who added the notice to favorites",
+            "example": "64e2483e058910c38b98f16d"
+          }
+        },
+        "example": {
+            "userId": "64e2483e058910c38b98f16d"
+        }
+      },
+      "RemoveNoticeFavoriteResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "UserId who removed the notice from favorites",
+            "example": "64e2483e058910c38b98f16d"
+          }
+        },
+        "example": {
+            "userId": "64e2483e058910c38b98f16d"
         }
       },
       "AddNoticenRequest": {
