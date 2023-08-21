@@ -31,7 +31,7 @@
     }
   ],
   "paths": {
-    "/auth/register": {
+    "/api/auth/register": {
       "post": {
         "tags": ["Auth"],
         "summary": "Create a new user",
@@ -68,7 +68,7 @@
         }
       }
     },
-    "/auth/login": {
+    "/api/auth/login": {
       "post": {
         "tags": ["Auth"],
         "summary": "Login user",
@@ -105,7 +105,7 @@
         }
       }
     },
-    "/auth/logout": {
+    "/api/auth/logout": {
       "post": {
         "tags": ["Auth"],
         "summary": "Logout user",
@@ -131,7 +131,7 @@
         }
       }
     },
-    "/auth/current": {
+    "/api/auth/current": {
       "get": {
         "tags": ["Auth"],
         "summary": "Get information about the current user",
@@ -164,7 +164,7 @@
         }
       }
     },
-    "/auth/profile": {
+    "/api/auth/profile": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Updates information about the current user",
@@ -200,7 +200,7 @@
         }
       }
     },
-    "/auth/profile/avatar": {
+    "/api/auth/profile/avatar": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Updates avatar of the current user",
@@ -256,19 +256,21 @@
         }
       }
     },
-    "/pets": {
+    "/api/pets": {
       "post": {
         "tags": ["Pets"],
         "summary": "Add a new pet",
-        "parameters": [{
-          "name": "Authorization",
-          "required": "true",
-          "schema": {
-            "type": "string",
-            "format": "bearer"
-          },
-          "description": "The usesr's token for add pet."
-        }],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The usesr's token for add pet."
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Add's pet object",
@@ -300,15 +302,17 @@
       "get": {
         "tags": ["Pets"],
         "summary": "Get all pets",
-        "parameters": [{
-          "name": "Authorization",
-          "required": "true",
-          "schema": {
-            "type": "string",
-            "format": "bearer"
-          },
-          "description": "The usesr's token for get all pet."
-        }],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The usesr's token for get all pet."
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "201": {
@@ -327,19 +331,21 @@
         }
       }
     },
-    "/pets/:id": {
+    "/api/pets/:id": {
       "delete": {
         "tags": ["Pets"],
         "summary": "Delete pet by id",
-        "parameters": [{
-          "name": "Authorization",
-          "required": "true",
-          "schema": {
-            "type": "string",
-            "format": "bearer"
-          },
-          "description": "The usesr's token for delete pet."
-        }],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The usesr's token for delete pet."
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "201": {
@@ -362,31 +368,33 @@
       "get": {
         "tags": ["Notices"],
         "summary": "Get all notices by search query and category",
-        "parameters": [{
-          "in": "path",
-          "name": "category",
-          "required": true,
-          "type":  "string",
-          "description": "Notices category"
-        }, 
-        {
-          "in": "query",
-          "name": "search",
-          "type":  "string",
-          "description": "Search word"
-        },
-        {
-          "in": "query",
-          "name": "page",
-          "type":  "number",
-          "description": "Page number"
-        }, 
-        {
-          "in": "query",
-          "name": "limit",
-          "type":  "number",
-          "description": "Number of notices per page"
-        }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "category",
+            "required": true,
+            "type": "string",
+            "description": "Notices category"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "type": "string",
+            "description": "Search word"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number",
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number",
+            "description": "Number of notices per page"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -411,13 +419,15 @@
       "get": {
         "tags": ["Notices"],
         "summary": "Get by id notice",
-        "parameters": [{
-          "in": "path",
-          "name": "noticeId",
-          "required": true,
-          "type":  "string",
-          "description": "Notice's id"
-        }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "noticeId",
+            "required": true,
+            "type": "string",
+            "description": "Notice's id"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -624,7 +634,7 @@
           "name": "Rada"
         }
       },
-     
+
       "GetPetsResponse": {
         "type": "object",
         "properties": {
@@ -656,10 +666,10 @@
           "comments": "Beautiful and clever girl"
         }
       },
-      "DeletePetResponse" : {
+      "DeletePetResponse": {
         "type": "object",
         "properties": {
-           "message": "Delete success"
+          "message": "Delete success"
         },
         "example": {
           "message": "Delete success"
@@ -732,33 +742,35 @@
             }
           }
         },
-        "example": [{
-          "_id": "64e10d144a3a60fc7905bf79",
-          "category": "sell",
-          "title": "Reliable friend",
-          "name": "Nice ones",
-          "type": "German Shepherd",
-          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-          "location": "Sumy",
-          "birthday": "15-04-2015",
-          "sex": "female",
-          "comment": "Active dog",
-          "price": 1000,
-          "owner": "64e0e0bcc4d8d3a91d3aa90c"
-        },
-        {
-          "_id": "64e103c48f5f51dbeffcc9cb",
-          "category": "lost-found",
-          "title": "A cheerful friend",
-          "name": "Point",
-          "type": "Cat",
-          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-          "location": "Sumy",
-          "birthday": "28-08-2022",
-          "sex": "female",
-          "comment": "Domestic cat",
-          "owner": "64e0e0bcc4d8d3a91d3aa90c"
-        }]
+        "example": [
+          {
+            "_id": "64e10d144a3a60fc7905bf79",
+            "category": "sell",
+            "title": "Reliable friend",
+            "name": "Nice ones",
+            "type": "German Shepherd",
+            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+            "location": "Sumy",
+            "birthday": "15-04-2015",
+            "sex": "female",
+            "comment": "Active dog",
+            "price": 1000,
+            "owner": "64e0e0bcc4d8d3a91d3aa90c"
+          },
+          {
+            "_id": "64e103c48f5f51dbeffcc9cb",
+            "category": "lost-found",
+            "title": "A cheerful friend",
+            "name": "Point",
+            "type": "Cat",
+            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+            "location": "Sumy",
+            "birthday": "28-08-2022",
+            "sex": "female",
+            "comment": "Domestic cat",
+            "owner": "64e0e0bcc4d8d3a91d3aa90c"
+          }
+        ]
       },
       "GetByIdNoticeResponse": {
         "type": "object",
@@ -822,7 +834,7 @@
             "type": "string",
             "description": "User's id who created the notice",
             "example": "64e0e0bcc4d8d3a91d3aa90c"
-          }    
+          }
         },
         "example": {
           "_id": "64e10d144a3a60fc7905bf79",
