@@ -1,5 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 const { HttpError } = require("../helpers");
+const fs = require("fs/promises");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,6 +13,7 @@ const uploadImageToCloudinary = async (file) =>
     if (error) {
       throw HttpError(400, error.message);
     }
+    fs.unlink(file);
     return result;
   });
 

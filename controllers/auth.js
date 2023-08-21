@@ -10,7 +10,7 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 
 const { SECRET_KEY } = process.env;
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
   const { name, email, password } = req.body;
   const user = await User.findOne({ email });
 
@@ -33,7 +33,7 @@ const register = async (req, res, next) => {
   });
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: email.toLowerCase() });
 
@@ -41,7 +41,7 @@ const login = async (req, res, next) => {
     throw HttpError(401, "Email or password is wrong");
   }
 
-  const passwordCompare = bcrypt.compare(password, user.password);
+  const passwordCompare = await bcrypt.compare(password, user.password);
 
   if (!passwordCompare) {
     throw HttpError(401, "Email or password is wrong");
@@ -57,19 +57,19 @@ const login = async (req, res, next) => {
   });
 };
 
-const getCurrent = async (req, res, next) => {
+const getCurrent = async (req, res) => {
   const { name, email, phone, birthday, city } = req.user;
   res.json({ name, email, phone, birthday, city });
 };
 
-const logout = async (req, res, next) => {
+const logout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: "" });
 
   res.status(204).json();
 };
 
-const updateProfile = async (req, res, next) => {
+const updateProfile = async (req, res) => {
   const { _id } = req.user;
   const { name, email, phone, birthday, city } = req.body;
 
@@ -92,11 +92,12 @@ const updateProfile = async (req, res, next) => {
   res.json(updates);
 };
 
-const updateAvatar = async (req, res, next) => {
+const updateAvatar = async (req, res) => {
   const { _id, avatarURL } = req.user;
-  const { path: tempUpload } = req.file;
 
-  const image = await uploadImageToCloudinary(tempUpload);
+  const { path } = req.file;
+
+  const image = await uploadImageToCloudinary(path);
   await User.findByIdAndUpdate(_id, { avatarURL: image.url });
 
   if (avatarURL) {
