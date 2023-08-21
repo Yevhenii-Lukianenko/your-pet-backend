@@ -16,6 +16,10 @@ router.get("/category/:category", notices.getAll);
 
 router.get('/:noticeId', validNoticeId, notices.getById);
 
+router.patch('/:noticeId/favorite', authenticate, validNoticeId, notices.addFavorite);
+
+router.patch('/:noticeId/nofavorite', authenticate, validNoticeId, notices.removeFavorite);
+
 router.post(
   "/",
   authenticate,

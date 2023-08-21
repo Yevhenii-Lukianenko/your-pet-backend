@@ -90,5 +90,7 @@ const add = async (req, res) => {
 module.exports = {
     getAll: ctrlWrapper(getAll),
     getById: ctrlWrapper(getById),
+    addFavorite: ctrlWrapper(addFavorite),
+    removeFavorite: ctrlWrapper(removeFavorite),
     add: ctrlWrapper(add),
 };
