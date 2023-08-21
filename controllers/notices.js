@@ -6,24 +6,31 @@ const getAll = async (req, res) => {
     const {category} = req.params;
     const {search = null} = req.query; 
     const {page = 1, limit = 12} = req.query;
-    
     const skip = (page - 1) * limit;
     let result;
 
-    if (!['sell', 'lost-found', 'in-good-hands', 'my-pet'].includes(category)) {
-        throw HttpError (400, 'Bad Request');
+    if (search) {
+        result = await Notice.find({category, title: { $regex: search, $options: 'i' }}, 
+        "-createdAt -updatedAt", {skip, limit});
+    } else {
+        result = await Notice.find({category}, 
+            "-createdAt -updatedAt", {skip, limit});
     } 
-    else if (search) {
-        result = await Notice.find({category: category, title: { $regex: search, $options: 'i' }})
-        .skip(skip).limit(limit).exec();
+
+    if (result.length === 0) {
+        throw HttpError (404, 'Not found');
     } 
-    else {
-        result = await Notice.find({category: category})
-        .skip(skip).limit(limit).exec();
-    
-        res.status(200).json(result);
+    res.status(200).json(result);    
+};
+
+const getById = async (req, res) => {
+    const {noticeId} = req.params;
+    const result = await Notice.findOne({_id: noticeId}, "-createdAt -updatedAt");
+
+    if (!result) {
+       throw HttpError (404, 'Not found')
     }
-        
+    res.status(200).json(result);
 };
 
 const add = async(req, res) => {
@@ -34,5 +41,6 @@ const add = async(req, res) => {
 
 module.exports = {
     getAll: ctrlWrapper(getAll),
+    getById: ctrlWrapper(getById),
     add: ctrlWrapper(add),
 };
