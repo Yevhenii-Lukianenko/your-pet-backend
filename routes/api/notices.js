@@ -1,14 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const {authenticate, validateBody, validNoticeId} = require('../../middlewares');
-const {schemas} = require('../../models/notices');
-const notices = require('../../controllers/notices');
+const {
+  authenticate,
+  validateBody,
+  validNoticeId,
+  upload,
+  imageProcessing,
+} = require("../../middlewares");
 
-router.get('/category/:category', notices.getAll);
+const { schemas } = require("../../models/notices");
+const notices = require("../../controllers/notices");
 
-router.get('/:noticeId', validNoticeId, notices.getById);
+router.get("/category/:category", notices.getAll);
 
-router.post("/", authenticate, validateBody(schemas.addSchema), notices.add);
+router.get("/:noticeId", validNoticeId, notices.getById);
+
+router.post(
+  "/",
+  authenticate,
+  upload.single("avatarURL"),
+  imageProcessing,
+  validateBody(schemas.addSchema),
+  notices.add
+);
 
 module.exports = router;

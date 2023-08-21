@@ -49,7 +49,7 @@ const updateSchema = joi
       .max(30)
       .pattern(/^[\p{L}'-]+$/u),
     email: joi.string().email(),
-    birthday: joi.string().pattern(/^\d{2}.\d{2}.\d{4}$/),
+    birthday: joi.string().pattern(/^\d{2}-\d{2}-\d{4}$/),
     phone: joi.string().pattern(/^(\+38)?0\d{9}$/),
     city: joi.string().pattern(/^[\p{L} ,.'-]+$/u),
   })
