@@ -21,7 +21,7 @@ const petsSchema = new Schema({
         type: String,
         required: true,
     }, 
-    avatarURL : {
+    avatarPet : {
         type: String,
     },
     owner: {

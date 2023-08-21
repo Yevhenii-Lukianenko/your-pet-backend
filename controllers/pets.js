@@ -1,9 +1,7 @@
 const {Pets} = require("../models/pets");
-// const path = require("path");
-// const fs = require("fs/promises");
-
-// const { SECRET_KEY } = process.env;
-// const avatarsDir = path.join(__dirname, "../", "public", "avatars");
+const {
+    uploadImageToCloudinary
+  } = require("../utils");
 
 const {ctrlWrapper, HttpError} = require("../helpers");
 
@@ -17,11 +15,25 @@ const getAll = async(req, res) => {
 }
 
 const add = async(req, res) => {
-    const {_id: owner} = req.user;
-    const result = await Pets.create({...req.body, owner});
+    const {_id: owner } = req.user;
+
+    const result = await Pets.create({
+        ...req.body, 
+        owner
+    }); 
+
     res.status(201).json(result);
 };
 
+const addImagePet = async(req, res) => {
+  const {id} = req.params;
+  const { path: tempUpload } = req.file;
+  const image = await uploadImageToCloudinary(tempUpload);
+
+  const result = await Pets.findByIdAndUpdate(id, { avatarPet: image.url})
+    res.status(201).json(result);
+}
+ 
 const remove = async(req, res) => {
     const {id} = req.params;
     const result = await Pets.findByIdAndDelete({_id: id});
@@ -36,5 +48,7 @@ const remove = async(req, res) => {
 module.exports = {
     add: ctrlWrapper(add),
     getAll: ctrlWrapper(getAll),
+    addImagePet: ctrlWrapper(addImagePet),
     remove: ctrlWrapper(remove),
+  
 }
