@@ -17,22 +17,38 @@ const getAll = async(req, res) => {
 const add = async(req, res) => {
     const {_id: owner } = req.user;
 
+    const { path: tempUpload } = req.file;
+    const image = await uploadImageToCloudinary(tempUpload);
+
     const result = await Pets.create({
         ...req.body, 
+        avatarPet: image.url,
         owner
     }); 
 
     res.status(201).json(result);
 };
 
-const addImagePet = async(req, res) => {
-  const {id} = req.params;
-  const { path: tempUpload } = req.file;
-  const image = await uploadImageToCloudinary(tempUpload);
 
-  const result = await Pets.findByIdAndUpdate(id, { avatarPet: image.url})
-    res.status(201).json(result);
-}
+// const add = async(req, res) => {
+//     const {_id: owner } = req.user;
+
+//     const result = await Pets.create({
+//         ...req.body, 
+//         owner
+//     }); 
+
+//     res.status(201).json(result);
+// };
+
+// const addImagePet = async(req, res) => {
+//   const {id} = req.params;
+//   const { path: tempUpload } = req.file;
+//   const image = await uploadImageToCloudinary(tempUpload);
+
+//   const result = await Pets.findByIdAndUpdate(id, { avatarPet: image.url})
+//     res.status(201).json(result);
+// }
  
 const remove = async(req, res) => {
     const {id} = req.params;
@@ -48,7 +64,7 @@ const remove = async(req, res) => {
 module.exports = {
     add: ctrlWrapper(add),
     getAll: ctrlWrapper(getAll),
-    addImagePet: ctrlWrapper(addImagePet),
+    // addImagePet: ctrlWrapper(addImagePet),
     remove: ctrlWrapper(remove),
   
 }
