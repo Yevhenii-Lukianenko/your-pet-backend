@@ -33,6 +33,36 @@ const getById = async (req, res) => {
     res.status(200).json(result);
 };
 
+const addFavorite = async (req, res) => {
+    const {noticeId} = req.params;
+    const {_id} = req.user;
+
+    const result = await Notice.findByIdAndUpdate(
+        noticeId,
+        {
+          $push: { usersAddFavorite: {_id} }, 
+        },
+        { new: true },
+      );
+
+    res.status(201).json({userId: _id});
+};
+
+const removeFavorite = async (req, res) => {
+    const {noticeId} = req.params;
+    const {_id} = req.user;
+
+    const result = await Notice.findByIdAndUpdate(
+        noticeId,
+        {
+          $pull: { usersAddFavorite: {_id} }, 
+        },
+        { new: true },
+      );
+
+    res.status(201).json({userId: _id});
+};
+
 const add = async(req, res) => {
     const {_id: owner} = req.user;
     const result = await Notice.create({...req.body, owner});
@@ -42,5 +72,7 @@ const add = async(req, res) => {
 module.exports = {
     getAll: ctrlWrapper(getAll),
     getById: ctrlWrapper(getById),
+    addFavorite: ctrlWrapper(addFavorite),
+    removeFavorite: ctrlWrapper(removeFavorite),
     add: ctrlWrapper(add),
 };

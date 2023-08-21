@@ -51,9 +51,9 @@ const noticeSchema = new Schema({
         message: 'The number must be greater than 0',
         },
     },
-    favorite: {
-        type: Boolean,
-        default: false,
+    usersAddFavorite: {
+        type: Array,
+        default: [],
     },
     owner: {
         type: Schema.Types.ObjectId,
@@ -74,13 +74,8 @@ const addSchema = Joi.object({
     price: Joi.number().integer().min(1),
 });
 
-const updateFavoriteSchema = Joi.object({
-    favorite: Joi.boolean().required(),
-});
-
 const schemas = {
     addSchema,
-    updateFavoriteSchema,
 };
 
 const Notice = model('notice', noticeSchema);
