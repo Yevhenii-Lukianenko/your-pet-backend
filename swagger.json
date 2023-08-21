@@ -439,6 +439,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not found"
           },
