@@ -15,6 +15,8 @@ router.post("/register", validateBody(schemas.registerSchema), user.register);
 
 router.post("/login", validateBody(schemas.loginSchema), user.login);
 
+router.post("/refresh", validateBody(schemas.refreshSchema), user.refresh);
+
 router.get("/current", authenticate, user.getCurrent);
 
 router.post("/logout", authenticate, user.logout);

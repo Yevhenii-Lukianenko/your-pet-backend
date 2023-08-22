@@ -8,7 +8,7 @@ const {
 const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../helpers");
 
-const { SECRET_KEY } = process.env;
+const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -48,13 +48,45 @@ const login = async (req, res) => {
   }
 
   const payload = { id: user._id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
-  await User.findByIdAndUpdate(user._id, { token });
+  const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
+    expiresIn: "5m",
+  });
+  const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
+    expiresIn: "7D",
+  });
+
+  await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
 
   res.json({
-    token,
+    accessToken,
+    refreshToken,
     user: { email: user.email },
   });
+};
+
+const refresh = async (req, res) => {
+  const { refreshToken: token } = req.body;
+  try {
+    const { id } = jwt.verify(token, REFRESH_SECRET_KEY);
+    const isExist = await User.findOne({ refreshToken: token });
+    if (!isExist) {
+      throw HttpError(403, "Token invalid");
+    }
+
+    const payload = { id };
+    const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
+      expiresIn: "5m",
+    });
+    const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
+      expiresIn: "7D",
+    });
+
+    await User.findByIdAndUpdate(isExist._id, { accessToken, refreshToken });
+
+    res.json({ accessToken, refreshToken });
+  } catch (error) {
+    throw HttpError(403, error.message);
+  }
 };
 
 const getCurrent = async (req, res) => {
@@ -64,7 +96,7 @@ const getCurrent = async (req, res) => {
 
 const logout = async (req, res) => {
   const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: "" });
+  await User.findByIdAndUpdate(_id, { accessToken: "", refreshToken: "" });
 
   res.status(204).json();
 };
@@ -115,4 +147,5 @@ module.exports = {
   logout: ctrlWrapper(logout),
   updateProfile: ctrlWrapper(updateProfile),
   updateAvatar: ctrlWrapper(updateAvatar),
+  refresh: ctrlWrapper(refresh),
 };
