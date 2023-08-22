@@ -356,7 +356,7 @@
         }
       }
     },
-    "/api/notices/category/{category}": {
+    "/api/notices/{category}": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get all notices by search query and category",
@@ -407,7 +407,7 @@
         }
       }
     },
-    "/api/notices/{noticeId}": {
+    "/api/notices/notice/{noticeId}": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get by id notice",
@@ -476,7 +476,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddNoticeFavoriteResponse"
+                  "$ref": "#/components/schemas/AddToFavoriteResponse"
                 }
               }
             }
@@ -529,7 +529,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RemoveNoticeFavoriteResponse"
+                  "$ref": "#/components/schemas/RemoveFromFavoriteResponse"
                 }
               }
             }
@@ -1041,7 +1041,7 @@
           "owner": "64e0e0bcc4d8d3a91d3aa90c"
         }
       },
-      "AddNoticeFavoriteResponse": {
+      "AddToFavoriteResponse": {
         "type": "object",
         "properties": {
           "userId": {
@@ -1054,7 +1054,7 @@
             "userId": "64e2483e058910c38b98f16d"
         }
       },
-      "RemoveNoticeFavoriteResponse": {
+      "RemoveFromFavoriteResponse": {
         "type": "object",
         "properties": {
           "userId": {
