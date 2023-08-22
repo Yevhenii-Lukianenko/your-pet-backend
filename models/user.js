@@ -16,7 +16,8 @@ const userSchema = new Schema(
       required: [true, "Email is required"],
       unique: true,
     },
-    token: String,
+    accessToken: String,
+    refreshToken: String,
     avatarURL: String,
     birthday: String,
     phone: String,
@@ -55,8 +56,10 @@ const updateSchema = joi
   })
   .or("name", "email", "birthday", "phone", "city");
 
+const refreshSchema = joi.object({ refreshToken: joi.string().required() });
+
 const User = model("user", userSchema);
 
-const schemas = { registerSchema, loginSchema, updateSchema };
+const schemas = { registerSchema, loginSchema, updateSchema, refreshSchema };
 
 module.exports = { User, schemas };
