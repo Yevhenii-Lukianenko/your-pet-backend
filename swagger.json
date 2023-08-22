@@ -28,6 +28,10 @@
     {
       "name": "User + Pets",
       "description": "User + Pets endpoints"
+    },
+    {
+      "name": "Friends",
+      "description": "Our Friends endpoints"
     }
   ],
   "paths": {
@@ -794,6 +798,60 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteUserNoticesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "/api/friends": {
+      "get": {
+        "tags": ["Friends"],
+        "summary": "Gets information about all our Friends",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllFriendsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/friends/{id}": {
+      "get": {
+        "tags": ["Friends"],
+        "summary": "Gets information about one of our Friends",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "Friend's Id"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFriendsById"
                 }
               }
             }
