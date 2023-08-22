@@ -261,15 +261,7 @@
         "tags": ["Pets"],
         "summary": "Add a new pet",
         "parameters": [
-          {
-            "name": "Authorization",
-            "required": "true",
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
-            "description": "The usesr's token for add pet."
-          }
+         
         ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -303,15 +295,7 @@
         "tags": ["Pets"],
         "summary": "Get all pets",
         "parameters": [
-          {
-            "name": "Authorization",
-            "required": "true",
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
-            "description": "The usesr's token for get all pet."
-          }
+         
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
@@ -331,20 +315,22 @@
         }
       }
     },
-    "/api/pets/:id": {
+    "/api/pets/{id}": {
       "delete": {
         "tags": ["Pets"],
         "summary": "Delete pet by id",
         "parameters": [
+          
           {
-            "name": "Authorization",
-            "required": "true",
+            "in": "path",
+            "name": "id",
+            "required": true,
             "schema": {
-              "type": "string",
-              "format": "bearer"
+              "type": "string"
             },
-            "description": "The usesr's token for delete pet."
+            "description": "Pet's id"
           }
+
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
@@ -454,6 +440,81 @@
           },
           "500": {
             "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/notices/": {
+      "get": {
+        "tags": ["Notices"],
+        "summary": "Get user's notices",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The usesr's token for get user's notices."
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserNoticesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "/api/notices/{id}": {
+      "delete": {
+        "tags": ["Notices"],
+        "summary": "Delete user's notice by id",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The usesr's token for delete user's notice."
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "User's notice id"
+          }
+
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteUserNoticesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
           }
         }
       }
@@ -609,6 +670,11 @@
       "AddPetsResponse": {
         "type": "object",
         "properties": {
+          "_id" :{
+            "type": "string",
+            "description": "Pet's id",
+            "example": "64e10d144a3a60fc7905bf79"
+          },
           "name": {
             "type": "string",
             "description": "Pet's name",
@@ -631,13 +697,19 @@
           }
         },
         "example": {
-          "name": "Rada"
+          "_id" : "54e103c48f5f51dbeffcc9cb",
+          "name": "Rada",
+          "dateOfBirth": "12-12-2012",
+          "type": "Pomeranian",
+          "comments": "Beautiful and clever girl"
         }
       },
 
       "GetPetsResponse": {
-        "type": "object",
-        "properties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
           "name": {
             "type": "string",
             "description": "Pet's email",
@@ -658,13 +730,16 @@
             "description": "Some comments about pet",
             "example": "Beautiful and clever girl"
           }
+         }
         },
-        "example": {
+        "example": [
+          {
           "name": "Rada",
           "dateOfBirth": "12-12-2012",
           "type": "Pomeranian",
           "comments": "Beautiful and clever girl"
-        }
+         }
+        ]
       },
       "DeletePetResponse": {
         "type": "object",
@@ -850,7 +925,113 @@
           "price": 1000,
           "owner": "64e0e0bcc4d8d3a91d3aa90c"
         }
-      }
+      },
+      "GetUserNoticesResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Notice's id",
+            "example": "64e10d144a3a60fc7905bf79"
+          },
+          "category": {
+            "type": "string",
+            "description": "Notice's category",
+            "example": "sell"
+          },
+          "title": {
+            "type": "string",
+            "description": "Notice's title",
+            "example": "Reliable friend"
+          },
+          "name": {
+            "type": "string",
+            "description": "Pet's name",
+            "example": "Nice ones"
+          },
+          "type": {
+            "type": "string",
+            "description": "Pet's type",
+            "example": "German Shepherd"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "Pet's avatar url",
+            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+          },
+          "location": {
+            "type": "string",
+            "description": "Pet's location",
+            "example": "Sumy"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "Pet's birthday",
+            "example": "15-04-2015"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Pet's gender",
+            "example": "female"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Notice's comment",
+            "example": "Active dog"
+          },
+          "price": {
+            "type": "number",
+            "description": "Pet's price",
+            "example": 1000
+          },
+          "owner": {
+            "type": "string",
+            "description": "User's id who created the notice",
+            "example": "64e0e0bcc4d8d3a91d3aa90c"
+          }
+        }
+      },
+      "example": [
+        {
+          "_id": "64e10d144a3a60fc7905bf79",
+          "category": "sell",
+          "title": "Reliable friend",
+          "name": "Nice ones",
+          "type": "German Shepherd",
+          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+          "location": "Sumy",
+          "birthday": "15-04-2015",
+          "sex": "female",
+          "comment": "Active dog",
+          "price": 1000,
+          "owner": "64e0e0bcc4d8d3a91d3aa90c"
+        },
+        {
+          "_id": "64e103c48f5f51dbeffcc9cb",
+          "category": "lost-found",
+          "title": "A cheerful friend",
+          "name": "Point",
+          "type": "Cat",
+          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+          "location": "Sumy",
+          "birthday": "28-08-2022",
+          "sex": "female",
+          "comment": "Domestic cat",
+          "owner": "64e0e0bcc4d8d3a91d3aa90c"
+        }
+      ]
+     },
+     "DeleteUserNoticesResponse" : {
+      "type": "object",
+        "properties": {
+          "message": "Delete success"
+        },
+        "example": {
+          "message": "Delete success"
+        }
+     }
     }
   },
   "securitySchemes": {

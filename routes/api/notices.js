@@ -11,4 +11,8 @@ router.get('/:noticeId', validNoticeId, notices.getById);
 
 router.post("/", authenticate, validateBody(schemas.addSchema), notices.add);
 
+router.get("/", authenticate,  notices.getUsersNotices);
+
+router.delete("/:id", authenticate,  notices.deleteUsersNotices);
+
 module.exports = router;
