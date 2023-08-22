@@ -33,6 +33,6 @@ router.post(
 
 router.get("/", authenticate,  notices.getUsersNotices);
 
-router.delete("/:id", authenticate,  notices.deleteUsersNotices);
+router.delete("/:noticeId", authenticate, validNoticeId, notices.removeById);
 
 module.exports = router;
