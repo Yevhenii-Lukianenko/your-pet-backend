@@ -260,8 +260,16 @@
       "post": {
         "tags": ["Pets"],
         "summary": "Add a new pet",
-        "parameters": [
-         
+        "parameters": [ {
+          "in": "path",
+          "name": "Authorization",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "bearer"
+          },
+          "description": "Token"
+         } 
         ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -295,7 +303,16 @@
         "tags": ["Pets"],
         "summary": "Get all pets",
         "parameters": [
-         
+          {
+            "in": "path",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Token"
+           } 
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
@@ -320,7 +337,6 @@
         "tags": ["Pets"],
         "summary": "Delete pet by id",
         "parameters": [
-          
           {
             "in": "path",
             "name": "id",
@@ -329,8 +345,17 @@
               "type": "string"
             },
             "description": "Pet's id"
+          },
+          {
+            "in": "path",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "Token"
           }
-
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
@@ -496,7 +521,9 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "type": "string",
+            "schema": {
+              "type": "string"
+            },
             "description": "User's notice id"
           }
 
@@ -643,7 +670,7 @@
       },
       "AddPetsRequest": {
         "type": "object",
-        "required": ["name", "dateOfBirth", "type", "comments"],
+        "required": ["name", "dateOfBirth", "type", "comments", "avatarPet"],
         "properties": {
           "name": {
             "type": "string",
@@ -664,6 +691,11 @@
             "type": "string",
             "description": "Some comments about pet",
             "example": "Beautiful and clever girl"
+          },
+          "avatarPet": {
+            "type": "string",
+            "description": "Pet's avatar url",
+            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
           }
         }
       },
@@ -694,6 +726,11 @@
             "type": "string",
             "description": "Some comments about pet",
             "example": "Beautiful and clever girl"
+          },
+          "avatarPet": {
+            "type": "string",
+            "description": "Pet's avatar url",
+            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
           }
         },
         "example": {
@@ -701,7 +738,8 @@
           "name": "Rada",
           "dateOfBirth": "12-12-2012",
           "type": "Pomeranian",
-          "comments": "Beautiful and clever girl"
+          "comments": "Beautiful and clever girl",
+          "avatarPet":"http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
         }
       },
 
@@ -710,6 +748,11 @@
         "items": {
           "type": "object",
           "properties": {
+          "id": {
+            "type": "string",
+            "description": "Pet's id",
+            "example": "54e103c48f5f51dbeffcc9cb"
+          },
           "name": {
             "type": "string",
             "description": "Pet's email",
@@ -729,15 +772,30 @@
             "type": "string",
             "description": "Some comments about pet",
             "example": "Beautiful and clever girl"
+          },
+          "avatarPet": {
+            "type": "string",
+            "description": "Pet's avatar url",
+            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
           }
          }
         },
         "example": [
           {
+          "id" : "54e103c48f5f51dbeffcc9cb",
           "name": "Rada",
           "dateOfBirth": "12-12-2012",
           "type": "Pomeranian",
-          "comments": "Beautiful and clever girl"
+          "comments": "Beautiful and clever girl",
+          "avatar": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+         },
+         {
+          "id" : "54e103c48f5f51dbeffcc9cb",
+          "name": "Spike",
+          "dateOfBirth": "21-12-2012",
+          "type": "Pomeranian",
+          "comments": "Beautiful and clever boy",
+          "avatar": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
          }
         ]
       },
