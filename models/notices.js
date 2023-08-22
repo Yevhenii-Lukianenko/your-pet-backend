@@ -51,7 +51,7 @@ const noticeSchema = new Schema(
         message: "The number must be greater than 0",
       },
     },
-    usersAddFavorite: {
+    usersAddToFavorite: {
         type: Array,
         default: [],
     },

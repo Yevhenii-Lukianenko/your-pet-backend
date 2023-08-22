@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
       { skip, limit }
     );
   } else {
-    result = await Notice.find({ category }, "-createdAt -updatedAt", {
+    result = await Notice.find({ category }, "-usersAddToFavorite -createdAt -updatedAt", {
       skip,
       limit,
     });
@@ -34,7 +34,7 @@ const getById = async (req, res) => {
   const { noticeId } = req.params;
   const result = await Notice.findOne(
     { _id: noticeId },
-    "-createdAt -updatedAt"
+    "-usersAddToFavorite -createdAt -updatedAt"
   );
 
   if (!result) {
@@ -43,7 +43,7 @@ const getById = async (req, res) => {
   res.status(200).json(result);
 };
 
-const addFavorite = async (req, res) => {
+const addToFavorite = async (req, res) => {
     const {noticeId} = req.params;
     const {_id} = req.user;
 
@@ -58,7 +58,7 @@ const addFavorite = async (req, res) => {
     res.status(201).json({userId: _id});
 };
 
-const removeFavorite = async (req, res) => {
+const removeFromFavorite = async (req, res) => {
     const {noticeId} = req.params;
     const {_id} = req.user;
 
@@ -90,7 +90,7 @@ const add = async (req, res) => {
 module.exports = {
     getAll: ctrlWrapper(getAll),
     getById: ctrlWrapper(getById),
-    addFavorite: ctrlWrapper(addFavorite),
-    removeFavorite: ctrlWrapper(removeFavorite),
+    addToFavorite: ctrlWrapper(addToFavorite),
+    removeFromFavorite: ctrlWrapper(removeFromFavorite),
     add: ctrlWrapper(add),
 };
