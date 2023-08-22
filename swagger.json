@@ -733,39 +733,6 @@
         }
       }
     },
-    "/api/profile": {
-      "get": {
-        "tags": ["User + Pets"],
-        "summary": "Gets information about the user and one's pets",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "The user's token for gets information"
-          }
-        ],
-        "security": [{ "Bearer": [] }],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserAndPets"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found"
-          },
-          "400": {
-            "description": "Bad request (invalid request body)"
-          }
-        }
-      }
-    },
     "/api/notices/{id}": {
       "delete": {
         "tags": ["Notices"],
@@ -801,6 +768,39 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "tags": ["User + Pets"],
+        "summary": "Gets information about the user and one's pets",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "The user's token for gets information"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAndPets"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
           },
           "400": {
             "description": "Bad request (invalid request body)"
