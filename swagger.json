@@ -36,7 +36,6 @@
         "tags": ["Auth"],
         "summary": "Create a new user",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Registration's object",
           "required": true,
@@ -73,7 +72,6 @@
         "tags": ["Auth"],
         "summary": "Login user",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Login's object",
           "required": true,
@@ -105,6 +103,39 @@
         }
       }
     },
+    "/api/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh user's tokens",
+        "parameters": [],
+        "requestBody": {
+          "description": "Refresh object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Refresh token invalid"
+          }
+        }
+      }
+    },
     "/api/auth/logout": {
       "post": {
         "tags": ["Auth"],
@@ -112,7 +143,7 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
@@ -136,7 +167,7 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
@@ -167,7 +198,7 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
@@ -201,7 +232,7 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
@@ -468,7 +499,7 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
@@ -505,18 +536,19 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
           },
           {
-          "in": "path",
-          "name": "noticeId",
-          "required": true,
-          "type":  "string",
-          "description": "Notice's id"
-        }],
+            "in": "path",
+            "name": "noticeId",
+            "required": true,
+            "type": "string",
+            "description": "Notice's id"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "201": {
@@ -532,15 +564,15 @@
           "401": {
             "description": "Not authorized"
           },
-        "404": {
-          "description": "Not found"
-        },
-        "500": {
-          "description": "Server error"
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
         }
       }
-    }
-  },
+    },
     "/api/notices/": {
       "get": {
         "tags": ["Notices"],
@@ -588,18 +620,19 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
           },
           {
-          "in": "path",
-          "name": "noticeId",
-          "required": true,
-          "type":  "string",
-          "description": "Notice's id"
-        }],
+            "in": "path",
+            "name": "noticeId",
+            "required": true,
+            "type": "string",
+            "description": "Notice's id"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "201": {
@@ -623,8 +656,8 @@
             }
           },
           "401": {
-              "description": "Not authorized"
-            },
+            "description": "Not authorized"
+          },
           "404": {
             "description": "Not found"
           },
@@ -641,7 +674,7 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
@@ -703,7 +736,7 @@
         "parameters": [
           {
             "name": "Authorization",
-            "required": "true",
+            "required": true,
             "type": "string",
             "description": "The user's token for gets information"
           }
@@ -842,6 +875,35 @@
           "email": "user@example.com"
         }
       },
+      "RefreshRequest": {
+        "type": "object",
+        "required": ["refreshToken"],
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "User's refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTRmYWE0ZDczOTdmZTBkZWY2YWZhMiIsImlhdCI6MTY5MjcyODE5OSwiZXhwIjoxNjkyNzI4MzE5fQ.pPT3WwEt9f6-0nEJ74fX9nQSAtf0pBoSuz5XhnYDxU4"
+          }
+        }
+      },
+      "RefreshResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "User's access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTRmYWE0ZDczOTdmZTBkZWY2YWZhMiIsImlhdCI6MTY5MjcyODE5OSwiZXhwIjoxNjkyNzI4MzE5fQ.pPT3WwEt9f6-0nEJ74fX9nQSAtf0pBoSuz5XhnYDxU4"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "User's refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTM1OTYzNGI0OWJjMDY3MjU1NDU1YSIsImlhdCI6MTY5MjYyMTE4NywiZXhwIjoxNjkyNzA3NTg3fQ.S7JkJ3xYF5AfkMIggChgSPZc3nHPA5dLTaUAUxvPiLE"
+          }
+        },
+        "example": {
+          "email": "user@example.com"
+        }
+      },
       "CurrentResponse": {
         "type": "object",
         "properties": {
@@ -927,7 +989,7 @@
       "AddPetsResponse": {
         "type": "object",
         "properties": {
-          "_id" :{
+          "_id": {
             "type": "string",
             "description": "Pet's id",
             "example": "64e10d144a3a60fc7905bf79"
@@ -959,69 +1021,68 @@
           }
         },
         "example": {
-          "_id" : "54e103c48f5f51dbeffcc9cb",
+          "_id": "54e103c48f5f51dbeffcc9cb",
           "name": "Rada",
           "dateOfBirth": "12-12-2012",
           "type": "Pomeranian",
           "comments": "Beautiful and clever girl",
-          "avatarPet":"http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+          "avatarPet": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
         }
       },
-
       "GetPetsResponse": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-          "id": {
-            "type": "string",
-            "description": "Pet's id",
-            "example": "54e103c48f5f51dbeffcc9cb"
-          },
-          "name": {
-            "type": "string",
-            "description": "Pet's email",
-            "example": "Rada"
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "description": "Pet's birthday",
-            "example": "12-12-2012"
-          },
-          "type": {
-            "type": "string",
-            "description": "Pets's type",
-            "example": "Pomeranian"
-          },
-          "comments": {
-            "type": "string",
-            "description": "Some comments about pet",
-            "example": "Beautiful and clever girl"
-          },
-          "avatarPet": {
-            "type": "string",
-            "description": "Pet's avatar url",
-            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+            "id": {
+              "type": "string",
+              "description": "Pet's id",
+              "example": "54e103c48f5f51dbeffcc9cb"
+            },
+            "name": {
+              "type": "string",
+              "description": "Pet's email",
+              "example": "Rada"
+            },
+            "dateOfBirth": {
+              "type": "string",
+              "description": "Pet's birthday",
+              "example": "12-12-2012"
+            },
+            "type": {
+              "type": "string",
+              "description": "Pets's type",
+              "example": "Pomeranian"
+            },
+            "comments": {
+              "type": "string",
+              "description": "Some comments about pet",
+              "example": "Beautiful and clever girl"
+            },
+            "avatarPet": {
+              "type": "string",
+              "description": "Pet's avatar url",
+              "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+            }
           }
-         }
         },
         "example": [
           {
-          "id" : "54e103c48f5f51dbeffcc9cb",
-          "name": "Rada",
-          "dateOfBirth": "12-12-2012",
-          "type": "Pomeranian",
-          "comments": "Beautiful and clever girl",
-          "avatar": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
-         },
-         {
-          "id" : "54e103c48f5f51dbeffcc9cb",
-          "name": "Spike",
-          "dateOfBirth": "21-12-2012",
-          "type": "Pomeranian",
-          "comments": "Beautiful and clever boy",
-          "avatar": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
-         }
+            "id": "54e103c48f5f51dbeffcc9cb",
+            "name": "Rada",
+            "dateOfBirth": "12-12-2012",
+            "type": "Pomeranian",
+            "comments": "Beautiful and clever girl",
+            "avatar": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+          },
+          {
+            "id": "54e103c48f5f51dbeffcc9cb",
+            "name": "Spike",
+            "dateOfBirth": "21-12-2012",
+            "type": "Pomeranian",
+            "comments": "Beautiful and clever boy",
+            "avatar": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+          }
         ]
       },
       "DeletePetResponse": {
@@ -1279,68 +1340,68 @@
               "description": "Users who added the notice in favorites",
               "example": [
                 {
-                    "_id": "64e2483e058910c38b98f16d",
-                    "name": "Mykola",
-                    "email": "user@example.com"
+                  "_id": "64e2483e058910c38b98f16d",
+                  "name": "Mykola",
+                  "email": "user@example.com"
                 },
                 {
-                    "_id": "64e0e0bcc4d8d3a91d3aa90c",
-                    "name": "Mykola",
-                    "email": "nickkuts888@gmail.com"
+                  "_id": "64e0e0bcc4d8d3a91d3aa90c",
+                  "name": "Mykola",
+                  "email": "nickkuts888@gmail.com"
                 }
-            ]
+              ]
             }
           }
         },
         "example": [
           {
-              "_id": "64e103c48f5f51dbeffcc9cb",
-              "category": "sell",
-              "title": "test",
-              "name": "Naisy",
-              "dateOfBirth": "15-04-2015",
-              "type": "dog",
-              "comment": "Active",
-              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-              "localion": "Sumy",
-              "sex": "girl",
-              "price": 1000,
-              "owner": "64e0e0bcc4d8d3a91d3aa90c",
-              "usersAddToFavorite": [
-                  {
-                      "_id": "64e0e0bcc4d8d3a91d3aa90c",
-                      "name": "Mykola",
-                      "email": "nickkuts888@gmail.com"
-                  }
-              ]
+            "_id": "64e103c48f5f51dbeffcc9cb",
+            "category": "sell",
+            "title": "test",
+            "name": "Naisy",
+            "dateOfBirth": "15-04-2015",
+            "type": "dog",
+            "comment": "Active",
+            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+            "localion": "Sumy",
+            "sex": "girl",
+            "price": 1000,
+            "owner": "64e0e0bcc4d8d3a91d3aa90c",
+            "usersAddToFavorite": [
+              {
+                "_id": "64e0e0bcc4d8d3a91d3aa90c",
+                "name": "Mykola",
+                "email": "nickkuts888@gmail.com"
+              }
+            ]
           },
           {
-              "_id": "64e38375235f29c7be1aeb9f",
-              "category": "sell",
-              "title": "Gold fish",
-              "name": "Eva",
-              "birthday": "30-12-2012",
-              "type": "fish",
-              "comment": "lucky fish",
-              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-              "location": "Bakhmut",
-              "sex": "girl",
-              "price": 12,
-              "owner": "64e326aca9a1b5e141680962",
-              "usersAddToFavorite": [
-                  {
-                      "_id": "64e2483e058910c38b98f16d",
-                      "name": "Mykola",
-                      "email": "user@example.com"
-                  },
-                  {
-                      "_id": "64e0e0bcc4d8d3a91d3aa90c",
-                      "name": "Mykola",
-                      "email": "nickkuts888@gmail.com"
-                  }
-              ]
+            "_id": "64e38375235f29c7be1aeb9f",
+            "category": "sell",
+            "title": "Gold fish",
+            "name": "Eva",
+            "birthday": "30-12-2012",
+            "type": "fish",
+            "comment": "lucky fish",
+            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+            "location": "Bakhmut",
+            "sex": "girl",
+            "price": 12,
+            "owner": "64e326aca9a1b5e141680962",
+            "usersAddToFavorite": [
+              {
+                "_id": "64e2483e058910c38b98f16d",
+                "name": "Mykola",
+                "email": "user@example.com"
+              },
+              {
+                "_id": "64e0e0bcc4d8d3a91d3aa90c",
+                "name": "Mykola",
+                "email": "nickkuts888@gmail.com"
+              }
+            ]
           }
-      ]
+        ]
       },
       "AddToFavoriteResponse": {
         "type": "object",
@@ -1352,91 +1413,91 @@
           }
         },
         "example": {
-            "userId": "64e2483e058910c38b98f16d"
+          "userId": "64e2483e058910c38b98f16d"
         }
       },
       "GetUserNoticesResponse": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Notice's id",
-            "example": "64e10d144a3a60fc7905bf79"
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Notice's id",
+              "example": "64e10d144a3a60fc7905bf79"
+            },
+            "category": {
+              "type": "string",
+              "description": "Notice's category",
+              "example": "sell"
+            },
+            "title": {
+              "type": "string",
+              "description": "Notice's title",
+              "example": "Reliable friend"
+            },
+            "name": {
+              "type": "string",
+              "description": "Pet's name",
+              "example": "Nice ones"
+            },
+            "type": {
+              "type": "string",
+              "description": "Pet's type",
+              "example": "German Shepherd"
+            },
+            "avatarURL": {
+              "type": "string",
+              "description": "Pet's avatar url",
+              "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+            },
+            "location": {
+              "type": "string",
+              "description": "Pet's location",
+              "example": "Sumy"
+            },
+            "birthday": {
+              "type": "string",
+              "description": "Pet's birthday",
+              "example": "15-04-2015"
+            },
+            "sex": {
+              "type": "string",
+              "description": "Pet's gender",
+              "example": "female"
+            },
+            "comment": {
+              "type": "string",
+              "description": "Notice's comment",
+              "example": "Active dog"
+            },
+            "price": {
+              "type": "number",
+              "description": "Pet's price",
+              "example": 1000
+            },
+            "owner": {
+              "type": "string",
+              "description": "User's id who created the notice",
+              "example": "64e0e0bcc4d8d3a91d3aa90c"
+            }
           },
-          "category": {
-            "type": "string",
-            "description": "Notice's category",
-            "example": "sell"
-          },
-          "title": {
-            "type": "string",
-            "description": "Notice's title",
-            "example": "Reliable friend"
-          },
-          "name": {
-            "type": "string",
-            "description": "Pet's name",
-            "example": "Nice ones"
-          },
-          "type": {
-            "type": "string",
-            "description": "Pet's type",
-            "example": "German Shepherd"
-          },
-          "avatarURL": {
-            "type": "string",
-            "description": "Pet's avatar url",
-            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
-          },
-          "location": {
-            "type": "string",
-            "description": "Pet's location",
-            "example": "Sumy"
-          },
-          "birthday": {
-            "type": "string",
-            "description": "Pet's birthday",
-            "example": "15-04-2015"
-          },
-          "sex": {
-            "type": "string",
-            "description": "Pet's gender",
-            "example": "female"
-          },
-          "comment": {
-            "type": "string",
-            "description": "Notice's comment",
-            "example": "Active dog"
-          },
-          "price": {
-            "type": "number",
-            "description": "Pet's price",
-            "example": 1000
-          },
-          "owner": {
-            "type": "string",
-            "description": "User's id who created the notice",
-            "example": "64e0e0bcc4d8d3a91d3aa90c"
+          "example": {
+            "_id": "52e10d144a3a60fc7905bf79",
+            "category": "sell",
+            "title": "Reliable friend",
+            "name": "Nice ones",
+            "type": "German Shepherd",
+            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+            "location": "Sumy",
+            "birthday": "15-04-2015",
+            "sex": "female",
+            "comment": "Active dog",
+            "price": 1000,
+            "owner": "64e0e0bcc4d8d3a91d3aa90c"
           }
-        },
-        "example": {
-          "_id": "52e10d144a3a60fc7905bf79",
-          "category": "sell",
-          "title": "Reliable friend",
-          "name": "Nice ones",
-          "type": "German Shepherd",
-          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-          "location": "Sumy",
-          "birthday": "15-04-2015",
-          "sex": "female",
-          "comment": "Active dog",
-          "price": 1000,
-          "owner": "64e0e0bcc4d8d3a91d3aa90c"
         }
-      }
-    },
+      },
       "RemoveFromFavoriteResponse": {
         "type": "object",
         "properties": {
@@ -1447,7 +1508,7 @@
           }
         },
         "example": {
-            "userId": "64e2483e058910c38b98f16d"
+          "userId": "64e2483e058910c38b98f16d"
         }
       },
       "AddNoticenRequest": {
@@ -1637,19 +1698,19 @@
             "comment": "Domestic cat",
             "owner": "64e0e0bcc4d8d3a91d3aa90c"
           }
-         ]
-        },
-       "DeleteUserNoticesResponse" : {
+        ]
+      },
+      "DeleteUserNoticesResponse": {
         "type": "object",
-          "properties": {
-            "message": "Delete success"
-          },
-          "example": {
-            "message": "Delete success"
-          }
+        "properties": {
+          "message": "Delete success"
+        },
+        "example": {
+          "message": "Delete success"
         }
       }
-    },
+    }
+  },
 
   "securitySchemes": {
     "Bearer": {
