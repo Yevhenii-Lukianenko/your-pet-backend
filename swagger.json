@@ -113,10 +113,8 @@
           {
             "name": "Authorization",
             "required": "true",
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
+            "type": "string",
+            "in": "header",
             "description": "The token issued to the current user."
           }
         ],
@@ -139,10 +137,8 @@
           {
             "name": "Authorization",
             "required": "true",
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
+            "type": "string",
+            "in": "header",
             "description": "The token issued to the current user."
           }
         ],
@@ -172,10 +168,8 @@
           {
             "name": "Authorization",
             "required": "true",
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
+            "type": "string",
+            "in": "header",
             "description": "The token issued to the current user."
           }
         ],
@@ -208,10 +202,8 @@
           {
             "name": "Authorization",
             "required": "true",
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
+            "type": "string",
+            "in": "header",
             "description": "The token issued to the current user."
           }
         ],
@@ -260,16 +252,16 @@
       "post": {
         "tags": ["Pets"],
         "summary": "Add a new pet",
-        "parameters": [ {
-          "in": "path",
-          "name": "Authorization",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "format": "bearer"
-          },
-          "description": "Token"
-         } 
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The usesr's token for add pet."
+          }
         ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
@@ -311,8 +303,8 @@
               "type": "string",
               "format": "bearer"
             },
-            "description": "Token"
-           } 
+            "description": "The user's token for get all pet."
+          }
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
@@ -354,7 +346,7 @@
               "type": "string",
               "format": "bearer"
             },
-            "description": "Token"
+            "description": "The user's token for delete pet."
           }
         ],
         "security": [{ "Bearer": [] }],
@@ -375,7 +367,7 @@
         }
       }
     },
-    "/api/notices/category/{category}": {
+    "/api/notices/{category}": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get all notices by search query and category",
@@ -426,7 +418,7 @@
         }
       }
     },
-    "/api/notices/{noticeId}": {
+    "/api/notices/notice/{noticeId}": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get by id notice",
@@ -469,13 +461,55 @@
         }
       }
     },
+    "/api/notices/{noticeId}/favorite": {
+      "patch": {
+        "tags": ["Notices"],
+        "summary": "Add notice in favorites",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "type": "string",
+            "in": "header",
+            "description": "The token issued to the current user."
+          },
+          {
+          "in": "path",
+          "name": "noticeId",
+          "required": true,
+          "type":  "string",
+          "description": "Notice's id"
+        }],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddToFavoriteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+        "404": {
+          "description": "Not found"
+        },
+        "500": {
+          "description": "Server error"
+        }
+      }
+    }
+  },
     "/api/notices/": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get user's notices",
         "parameters": [
           {
-            "in": "path",
             "name": "Authorization",
             "required": true,
             "schema": {
@@ -496,6 +530,161 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notices/{noticeId}/nofavorite": {
+      "patch": {
+        "tags": ["Notices"],
+        "summary": "Remove notice from favorites",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "type": "string",
+            "in": "header",
+            "description": "The token issued to the current user."
+          },
+          {
+          "in": "path",
+          "name": "noticeId",
+          "required": true,
+          "type":  "string",
+          "description": "Notice's id"
+        }],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveFromFavoriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
+          "401": {
+              "description": "Not authorized"
+            },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/notices": {
+      "post": {
+        "tags": ["Notices"],
+        "summary": "Add a new notice",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "type": "string",
+            "in": "header",
+            "description": "The token issued to the current user."
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "avatarURL"
+                  },
+                  "value": {
+                    "type": "file",
+                    "description": "image.jpg"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNoticenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetByIdNoticeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/profile": {
+      "get": {
+        "tags": ["User + Pets"],
+        "summary": "Gets information about the user and one's pets",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": "true",
+            "type": "string",
+            "description": "The user's token for gets information"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAndPets"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
           },
           "400": {
             "description": "Bad request (invalid request body)"
@@ -526,7 +715,6 @@
             },
             "description": "User's notice id"
           }
-
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
@@ -984,6 +1172,19 @@
           "owner": "64e0e0bcc4d8d3a91d3aa90c"
         }
       },
+      "AddToFavoriteResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "UserId who added the notice to favorites",
+            "example": "64e2483e058910c38b98f16d"
+          }
+        },
+        "example": {
+            "userId": "64e2483e058910c38b98f16d"
+        }
+      },
       "GetUserNoticesResponse": {
       "type": "array",
       "items": {
@@ -1049,11 +1250,9 @@
             "description": "User's id who created the notice",
             "example": "64e0e0bcc4d8d3a91d3aa90c"
           }
-        }
-      },
-      "example": [
-        {
-          "_id": "64e10d144a3a60fc7905bf79",
+        },
+        "example": {
+          "_id": "52e10d144a3a60fc7905bf79",
           "category": "sell",
           "title": "Reliable friend",
           "name": "Nice ones",
@@ -1065,33 +1264,223 @@
           "comment": "Active dog",
           "price": 1000,
           "owner": "64e0e0bcc4d8d3a91d3aa90c"
-        },
-        {
-          "_id": "64e103c48f5f51dbeffcc9cb",
-          "category": "lost-found",
-          "title": "A cheerful friend",
-          "name": "Point",
-          "type": "Cat",
-          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-          "location": "Sumy",
-          "birthday": "28-08-2022",
-          "sex": "female",
-          "comment": "Domestic cat",
-          "owner": "64e0e0bcc4d8d3a91d3aa90c"
         }
-      ]
-     },
-     "DeleteUserNoticesResponse" : {
-      "type": "object",
+      }
+    },
+      "RemoveFromFavoriteResponse": {
+        "type": "object",
         "properties": {
-          "message": "Delete success"
+          "userId": {
+            "type": "string",
+            "description": "UserId who removed the notice from favorites",
+            "example": "64e2483e058910c38b98f16d"
+          }
         },
         "example": {
-          "message": "Delete success"
+            "userId": "64e2483e058910c38b98f16d"
         }
-     }
-    }
-  },
+      },
+      "AddNoticenRequest": {
+        "type": "object",
+        "required": [
+          "category",
+          "title",
+          "name",
+          "type",
+          "location",
+          "birthday",
+          "sex",
+          "comment",
+          "price"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Notice's category",
+            "example": "sell"
+          },
+          "title": {
+            "type": "string",
+            "description": "Notice's title",
+            "example": "Reliable friend"
+          },
+          "name": {
+            "type": "string",
+            "description": "Pet's name",
+            "example": "Nice ones"
+          },
+          "type": {
+            "type": "string",
+            "description": "Pet's type",
+            "example": "German Shepherd"
+          },
+          "location": {
+            "type": "string",
+            "description": "Pet's location",
+            "example": "Sumy"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "Pet's birthday",
+            "example": "15-04-2015"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Pet's gender",
+            "example": "female"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Notice's comment",
+            "example": "Active dog"
+          },
+          "price": {
+            "type": "number",
+            "description": "Pet's price",
+            "example": 1000
+          }
+        },
+        "example": {
+          "category": "sell",
+          "title": "Reliable friend",
+          "name": "Nice ones",
+          "type": "German Shepherd",
+          "location": "Sumy",
+          "birthday": "15-04-2015",
+          "sex": "female",
+          "comment": "Active dog",
+          "price": 1000
+        }
+      },
+      "UserAndPets": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "User's id",
+                "example": "64e10d144a3a60fc7905bf79"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Zhenya"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "user@example.com"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's avatar url",
+                "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+              },
+              "birthday": {
+                "type": "string",
+                "description": "User's birthday",
+                "example": "01.01.1999"
+              },
+              "city": {
+                "type": "string",
+                "description": "User's location",
+                "example": "Sumy"
+              },
+              "phone": {
+                "type": "string",
+                "description": "User's pgone",
+                "example": "+380999999999"
+              }
+            }
+          },
+          "userPets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Pet's id",
+                  "example": "64e327b50a4bcf729aa206d1"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Pet's name",
+                  "example": "Spike"
+                },
+                "dateOfBirth": {
+                  "type": "string",
+                  "description": "Pet's birthday",
+                  "example": "02-10-2021"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Pet's type",
+                  "example": "boy"
+                },
+                "comments": {
+                  "type": "string",
+                  "description": "Some comments about pet",
+                  "example": "Beautiful and clever girl"
+                },
+                "avatarPet": {
+                  "type": "string",
+                  "description": "Pet's avatar url",
+                  "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+                },
+                "owner": {
+                  "type": "string",
+                  "description": "Owner's id",
+                  "example": "64e10d144a3a60fc7905bf79"
+                }
+              }
+            }
+          }
+        },
+        "example": [
+          {
+            "_id": "64e10d144a3a60fc7905bf79",
+            "category": "sell",
+            "title": "Reliable friend",
+            "name": "Nice ones",
+            "type": "German Shepherd",
+            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+            "location": "Sumy",
+            "birthday": "15-04-2015",
+            "sex": "female",
+            "comment": "Active dog",
+            "price": 1000,
+            "owner": "64e0e0bcc4d8d3a91d3aa90c"
+          },
+          {
+            "_id": "64e103c48f5f51dbeffcc9cb",
+            "category": "lost-found",
+            "title": "A cheerful friend",
+            "name": "Point",
+            "type": "Cat",
+            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+            "location": "Sumy",
+            "birthday": "28-08-2022",
+            "sex": "female",
+            "comment": "Domestic cat",
+            "owner": "64e0e0bcc4d8d3a91d3aa90c"
+          }
+         ]
+        },
+       "DeleteUserNoticesResponse" : {
+        "type": "object",
+          "properties": {
+            "message": "Delete success"
+          },
+          "example": {
+            "message": "Delete success"
+          }
+        }
+      }
+    },
+
   "securitySchemes": {
     "Bearer": {
       "type": "http",
