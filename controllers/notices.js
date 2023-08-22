@@ -50,7 +50,7 @@ const addToFavorite = async (req, res) => {
     const result = await Notice.findByIdAndUpdate(
         noticeId,
         {
-          $push: { usersAddFavorite: {_id} }, 
+          $push: { usersAddToFavorite: {_id} }, 
         },
         { new: true },
       );
@@ -65,7 +65,7 @@ const removeFromFavorite = async (req, res) => {
     const result = await Notice.findByIdAndUpdate(
         noticeId,
         {
-          $pull: { usersAddFavorite: {_id} }, 
+          $pull: { usersAddToFavorite: {_id} }, 
         },
         { new: true },
       );
