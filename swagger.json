@@ -770,7 +770,7 @@
         }
       }
     },
-    "/api/notices/{id}": {
+    "/api/notices/{noticeId}": {
       "delete": {
         "tags": ["Notices"],
         "summary": "Delete user's notice by id",
@@ -786,7 +786,7 @@
           },
           {
             "in": "path",
-            "name": "id",
+            "name": "noticeId",
             "required": true,
             "schema": {
               "type": "string"
@@ -796,7 +796,7 @@
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -807,7 +807,23 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -873,23 +889,9 @@
         "tags": ["Friends"],
         "summary": "Gets information about one of our Friends",
         "parameters": [
-    "/api/notices/{noticeId}": {
-      "delete": {
-        "tags": ["Notices"],
-        "summary": "Delete user's notice by id",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
-            "description": "The usesr's token for delete user's notice."
-          },
           {
             "in": "path",
-            "name": "noticeId",
+            "name": "id",
             "required": true,
             "type": "string",
             "description": "Friend's Id"
@@ -897,7 +899,7 @@
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -908,23 +910,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "${noticeId} is not a valid id"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Not authorized"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Server error"
+            "description": "Bad request (invalid request body)"
           }
         }
       }
