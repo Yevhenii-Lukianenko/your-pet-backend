@@ -486,6 +486,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not authorized"
           },
@@ -529,45 +539,6 @@
               }
             }
           },
-          "401": {
-            "description": "Not authorized"
-          },
-        "404": {
-          "description": "Not found"
-        },
-        "500": {
-          "description": "Server error"
-        }
-      }
-    }
-  },
-    "/api/notices/": {
-      "get": {
-        "tags": ["Notices"],
-        "summary": "Get user's notices",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "bearer"
-            },
-            "description": "The usesr's token for get user's notices."
-          }
-        ],
-        "security": [{ "Bearer": [] }],
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUserNoticesResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -577,10 +548,22 @@
                 }
               }
             }
-          }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+        "404": {
+          "description": "Not found"
+        },
+        "409": {
+          "description": "The notice is already in the list of favorites"
+        },
+        "500": {
+          "description": "Server error"
         }
       }
-    },
+    }
+  },
     "/api/notices/{noticeId}/nofavorite": {
       "patch": {
         "tags": ["Notices"],
@@ -625,6 +608,58 @@
           "401": {
               "description": "Not authorized"
             },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "The notice is not in the list of favorites"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/notices/": {
+      "get": {
+        "tags": ["Notices"],
+        "summary": "Get user's notices",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "bearer"
+            },
+            "description": "The usesr's token for get user's notices."
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserNoticesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
           "404": {
             "description": "Not found"
           },
@@ -687,6 +722,9 @@
           "400": {
             "description": "Bad request (invalid request body)"
           },
+          "401": {
+            "description": "Not authorized"
+          },
           "404": {
             "description": "Not found"
           },
@@ -729,7 +767,7 @@
         }
       }
     },
-    "/api/notices/{id}": {
+    "/api/notices/{noticeId}": {
       "delete": {
         "tags": ["Notices"],
         "summary": "Delete user's notice by id",
@@ -745,17 +783,17 @@
           },
           {
             "in": "path",
-            "name": "id",
+            "name": "noticeId",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "description": "User's notice id"
+            "description": "Notice's id"
           }
         ],
         "security": [{ "Bearer": [] }],
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -766,7 +804,23 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "${noticeId} is not a valid id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -1642,10 +1696,10 @@
        "DeleteUserNoticesResponse" : {
         "type": "object",
           "properties": {
-            "message": "Delete success"
+            "message": "Notice deleted successfully"
           },
           "example": {
-            "message": "Delete success"
+            "message": "Notice deleted successfully"
           }
         }
       }

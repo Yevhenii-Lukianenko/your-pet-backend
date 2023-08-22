@@ -45,13 +45,19 @@ const addToFavorite = async (req, res) => {
     const {noticeId} = req.params;
     const {_id} = req.user;
 
-    const result = await Notice.findByIdAndUpdate(
-        noticeId,
-        {
-          $push: { usersAddToFavorite: {_id} }, 
-        },
-        { new: true },
-      );
+    const { usersAddToFavorite } = await Notice.findById(noticeId);
+    const isUserInFavorite = usersAddToFavorite.some((userId) => userId.equals(_id));
+
+    if (isUserInFavorite) {
+      throw HttpError(409, "The notice is already in the list of favorites");
+    }
+    await Notice.findByIdAndUpdate(
+      noticeId,
+      {
+        $push: { usersAddToFavorite: _id }, 
+      },
+      { new: true },
+    );
 
     res.status(201).json({userId: _id});
 };
@@ -73,10 +79,16 @@ const removeFromFavorite = async (req, res) => {
     const {noticeId} = req.params;
     const {_id} = req.user;
 
-    const result = await Notice.findByIdAndUpdate(
+    const { usersAddToFavorite } = await Notice.findById(noticeId);
+    const isUserInFavorite = usersAddToFavorite.some((userId) => userId.equals(_id));
+
+    if (!isUserInFavorite) {
+      throw HttpError(409, "The notice is not in the list of favorites");
+    }
+    await Notice.findByIdAndUpdate(
         noticeId,
         {
-          $pull: { usersAddToFavorite: {_id} }, 
+          $pull: { usersAddToFavorite: _id }, 
         },
         { new: true },
       );
@@ -109,26 +121,33 @@ const getUsersNotices = async(req, res) => {
         const usersNotices = await Notice.find({owner: _id});
 
         return res.json({usersNotices})
-}
+};
 
-const deleteUsersNotices = async(req, res) => {
-    const {_id} = req.user;
-    const user = await User.findById(_id);
+const removeById = async (req, res) => {
+  const {noticeId} = req.params;
+  const {_id} = req.user;
 
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
+  const notice = await Notice.findById(noticeId);
+
+  if(!notice) {
+    throw HttpError (404, 'Not found')
+  } 
+  else {
+    console.log(notice.owner.equals(_id));
+    if (!notice.owner.equals(_id)) {
+      throw HttpError (404, 'Not found')
+    }
+    else {
+      const result = await Notice.findByIdAndRemove(noticeId);
+      
+      if(!result) {
+      throw HttpError (404, 'Not found')
       }
-    const {id} = req.params
-    const deleteNotice = await Notice.find({owner: _id});
-    if(!deleteNotice){
-        return res.status(404).json({ message: "User not found" });
+
+      res.status(200).json({ message: 'Notice deleted successfully' })
     }
-    const result = await Notice.findByIdAndDelete({_id: id})
-    if(!result){
-        throw HttpError(404, "Not Found");
-    }
-    return res.json({message: "Delete success"})
-}
+  }
+};
 
 module.exports = {
     getAll: ctrlWrapper(getAll),
@@ -138,5 +157,5 @@ module.exports = {
     removeFromFavorite: ctrlWrapper(removeFromFavorite),
     add: ctrlWrapper(add),
     getUsersNotices:ctrlWrapper(getUsersNotices),
-    deleteUsersNotices: ctrlWrapper(deleteUsersNotices),
+    removeById: ctrlWrapper(removeById),
 };
