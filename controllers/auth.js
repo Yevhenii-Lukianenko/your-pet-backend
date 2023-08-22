@@ -49,18 +49,21 @@ const login = async (req, res) => {
 
   const payload = { id: user._id };
   const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
-    expiresIn: "5m",
+    expiresIn: "1D",
   });
   const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
     expiresIn: "7D",
   });
 
-  await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
+  await User.findByIdAndUpdate(user._id, {
+    accessToken,
+    refreshToken,
+  });
 
   res.json({
     accessToken,
     refreshToken,
-    user: { email: user.email },
+    email: user.email,
   });
 };
 
@@ -75,7 +78,7 @@ const refresh = async (req, res) => {
 
     const payload = { id };
     const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
-      expiresIn: "5m",
+      expiresIn: "1D",
     });
     const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
       expiresIn: "7D",
@@ -90,8 +93,18 @@ const refresh = async (req, res) => {
 };
 
 const getCurrent = async (req, res) => {
-  const { name, email, phone, birthday, city } = req.user;
-  res.json({ name, email, phone, birthday, city });
+  const { _id, name, email, phone, birthday, city, accessToken, refreshToken } =
+    req.user;
+  res.json({
+    _id,
+    name,
+    email,
+    phone,
+    birthday,
+    city,
+    accessToken,
+    refreshToken,
+  });
 };
 
 const logout = async (req, res) => {

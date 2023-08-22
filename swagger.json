@@ -215,7 +215,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CurrentResponse"
+                  "$ref": "#/components/schemas/ProfileUpdateResponse"
                 }
               }
             }
@@ -927,10 +927,22 @@
             "description": "User's email",
             "format": "email",
             "example": "user@example.com"
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "User's access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTM1OTYzNGI0OWJjMDY3MjU1NDU1YSIsImlhdCI6MTY5MjYyMTE4NywiZXhwIjoxNjkyNzA3NTg3fQ.S7JkJ3xYF5AfkMIggChgSPZc3nHPA5dLTaUAUxvPiLE"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "User's refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTMyNmFjYTlhMWI1ZTE0MTY4MDk2MiIsImlhdCI6MTY5MjYwODE4NywiZXhwIjoxNjkyNjk0NTg3fQ.Hvbtuq0Hh8yf9KmWUoRhH1E8kFMljuFLmYS_Anug194"
           }
         },
         "example": {
-          "email": "user@example.com"
+          "email": "user@example.com",
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTM1OTYzNGI0OWJjMDY3MjU1NDU1YSIsImlhdCI6MTY5MjYyMTE4NywiZXhwIjoxNjkyNzA3NTg3fQ.S7JkJ3xYF5AfkMIggChgSPZc3nHPA5dLTaUAUxvPiLE",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTMyNmFjYTlhMWI1ZTE0MTY4MDk2MiIsImlhdCI6MTY5MjYwODE4NywiZXhwIjoxNjkyNjk0NTg3fQ.Hvbtuq0Hh8yf9KmWUoRhH1E8kFMljuFLmYS_Anug194"
         }
       },
       "RefreshRequest": {
@@ -959,10 +971,62 @@
           }
         },
         "example": {
-          "email": "user@example.com"
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTM1OTYzNGI0OWJjMDY3MjU1NDU1YSIsImlhdCI6MTY5MjYyMTE4NywiZXhwIjoxNjkyNzA3NTg3fQ.S7JkJ3xYF5AfkMIggChgSPZc3nHPA5dLTaUAUxvPiLE",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTMyNmFjYTlhMWI1ZTE0MTY4MDk2MiIsImlhdCI6MTY5MjYwODE4NywiZXhwIjoxNjkyNjk0NTg3fQ.Hvbtuq0Hh8yf9KmWUoRhH1E8kFMljuFLmYS_Anug194"
         }
       },
       "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "64e500f09cf419d2b26820b9"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "user@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone",
+            "example": "380991122333"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "User's birthday",
+            "example": "01.02.1999"
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "User's access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTUwMGYwOWNmNDE5ZDJiMjY4MjBiOSIsImlhdCI6MTY5MjczNTM3NiwiZXhwIjoxNjkzMzQwMTc2fQ.zy8aG3QMFs-ARrn2ji0vWJ2Rtcr65NBnz5sBT7Z8fO8"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "User's refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTUwMGYwOWNmNDE5ZDJiMjY4MjBiOSIsImlhdCI6MTY5MjczNTM3NiwiZXhwIjoxNjkyODIxNzc2fQ.IYGsfdyeXAEU0z8zcL523lW31oUJHOjCMIBpLMxqNTk"
+          }
+        },
+        "example": {
+          "_id": "64e500f09cf419d2b26820b9",
+          "name": "Zhenya",
+          "email": "user@example.com",
+          "phone": "+380991122333",
+          "birthday": "01.02.1999",
+          "city": "Sumy",
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTUwMGYwOWNmNDE5ZDJiMjY4MjBiOSIsImlhdCI6MTY5MjczNTM3NiwiZXhwIjoxNjkzMzQwMTc2fQ.zy8aG3QMFs-ARrn2ji0vWJ2Rtcr65NBnz5sBT7Z8fO8",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZTUwMGYwOWNmNDE5ZDJiMjY4MjBiOSIsImlhdCI6MTY5MjczNTM3NiwiZXhwIjoxNjkyODIxNzc2fQ.IYGsfdyeXAEU0z8zcL523lW31oUJHOjCMIBpLMxqNTk"
+        }
+      },
+      "ProfileUpdateResponse": {
         "type": "object",
         "properties": {
           "name": {
@@ -985,11 +1049,6 @@
             "type": "string",
             "description": "User's birthday",
             "example": "01.02.1999"
-          },
-          "city": {
-            "type": "string",
-            "description": "User's city",
-            "example": "Sumy"
           }
         },
         "example": {
