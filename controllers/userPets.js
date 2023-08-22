@@ -4,7 +4,7 @@ const { ctrlWrapper } = require("../helpers");
 
 const userPets = async (req, res) => {
   const { _id } = req.user;
-  const user = await User.findById(_id, "-token -password");
+  const user = await User.findById(_id, "-accessToken -refreshToken -password");
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
