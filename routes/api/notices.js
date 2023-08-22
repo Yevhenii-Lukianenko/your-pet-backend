@@ -3,16 +3,16 @@ const router = express.Router();
 
 const {
   authenticate,
-  validateBody,
-  validNoticeId,
-  upload,
-  imageProcessing,
-} = require("../../middlewares");
+  validateBody, 
+  validNoticeId, 
+  upload, 
+  imageProcessing
+} = require('../../middlewares');
 
-const { schemas } = require("../../models/notices");
-const notices = require("../../controllers/notices");
+const {schemas} = require('../../models/notices');
+const notices = require('../../controllers/notices');
 
-router.get("/:category", notices.getAll);
+router.get('/:category', notices.getAll);
 
 router.get('/notice/:noticeId', validNoticeId, notices.getById);
 
@@ -28,5 +28,9 @@ router.post(
   validateBody(schemas.addSchema),
   notices.add
 );
+
+router.get("/", authenticate,  notices.getUsersNotices);
+
+router.delete("/:id", authenticate,  notices.deleteUsersNotices);
 
 module.exports = router;
