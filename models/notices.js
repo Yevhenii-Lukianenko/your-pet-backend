@@ -51,14 +51,14 @@ const noticeSchema = new Schema(
         message: "The number must be greater than 0",
       },
     },
-    usersAddToFavorite: {
-        type: Array,
-        default: [],
-    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    usersAddToFavorite: [{
+      type: Schema.Types.ObjectId,
+      ref: "user"
+    }],
   },
   { versionKey: false, timestamps: true }
 );

@@ -12,11 +12,13 @@ const {
 const {schemas} = require('../../models/notices');
 const notices = require('../../controllers/notices');
 
-router.get('/:category', notices.getAll);
+router.get("/category/:category", notices.getAll);
 
 router.get('/notice/:noticeId', validNoticeId, notices.getById);
 
 router.patch('/:noticeId/favorite', authenticate, validNoticeId, notices.addToFavorite);
+
+router.get('/favorite', authenticate, notices.getFavorite);
 
 router.patch('/:noticeId/nofavorite', authenticate, validNoticeId, notices.removeFromFavorite);
 
