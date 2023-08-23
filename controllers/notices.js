@@ -32,14 +32,17 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
   const { noticeId } = req.params;
-  const result = await Notice.findOne({ _id: noticeId }, 
+  const notice = await Notice.findOne({ _id: noticeId }, 
     "-createdAt -updatedAt")
       .populate('owner', 'email name phone');
 
-  if (!result) {
+  if (!notice) {
     throw HttpError(404, "Not found");
   }
-  res.status(200).json(result);
+  notice.views += 1;
+  await notice.save(); 
+
+  res.status(200).json(notice);
 };
 
 const addToFavorite = async (req, res) => {
@@ -65,14 +68,28 @@ const addToFavorite = async (req, res) => {
 
 const getFavorite = async (req, res) => {
   const {_id} = req.user;
-  
-  const result = await Notice.find({ usersAddToFavorite: _id },
-    "-createdAt -updatedAt")
-    .populate('owner', 'email name phone');
+  const { search = null } = req.query;
+  const { page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
+  let result;
 
-  if (!result) {
+  if (search) {
+    result = await Notice.find({ usersAddToFavorite: _id, title: { $regex: search, $options: "i" } },
+      "-createdAt -updatedAt",
+      { skip, limit }
+    ).populate('owner', 'email name phone');
+  } 
+  else {
+    result = await Notice.find({ usersAddToFavorite: _id }, 
+      "-createdAt -updatedAt", 
+      { skip, limit }
+    ).populate('owner', 'email name phone');
+  }
+
+  if (result.length === 0) {
     throw HttpError(404, "Not found");
   }
+
   res.status(200).json(result);
 };
 
@@ -97,7 +114,7 @@ const removeFromFavorite = async (req, res) => {
     res.status(201).json({userId: _id});
 };
 
-const add = async (req, res) => {
+const addUserNotice = async (req, res) => {
   const { _id: owner } = req.user;
   const { path } = req.file;
 
@@ -112,18 +129,31 @@ const add = async (req, res) => {
   res.status(201).json(result);
 };
 
-const get = async(req, res) => {
-    const {_id} = req.user;
+const getUserNotices = async(req, res) => {
+  const {_id} = req.user;
+  const { search = null } = req.query;
+  const { page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
+  let result;
 
-    const result = await Notice.find({owner: _id},
-      "-createdAt -updatedAt")
-      .populate('usersAddToFavorite', 'email name phone');
+  if (search) {
+    result = await Notice.find({ owner: _id, title: { $regex: search, $options: "i" } },
+      "-createdAt -updatedAt",
+      { skip, limit }
+    ).populate('usersAddToFavorite', 'email name phone');
+  } 
+  else {
+    result = await Notice.find({ owner: _id }, 
+      "-createdAt -updatedAt", 
+      { skip, limit }
+    ).populate('usersAddToFavorite', 'email name phone');
+  }
 
-    if (result.length === 0) {
-      throw HttpError(404, "Not found");
-    }
+  if (result.length === 0) {
+    throw HttpError(404, "Not found");
+  }
 
-    res.status(200).json(result);
+  res.status(200).json(result);
 };
 
 const removeById = async (req, res) => {
@@ -157,7 +187,7 @@ module.exports = {
     addToFavorite: ctrlWrapper(addToFavorite),
     getFavorite: ctrlWrapper(getFavorite),
     removeFromFavorite: ctrlWrapper(removeFromFavorite),
-    add: ctrlWrapper(add),
-    get:ctrlWrapper(get),
+    addUserNotice: ctrlWrapper(addUserNotice),
+    getUserNotices:ctrlWrapper(getUserNotices),
     removeById: ctrlWrapper(removeById),
 };

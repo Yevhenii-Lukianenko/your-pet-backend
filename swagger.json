@@ -511,6 +511,24 @@
             "type": "string",
             "in": "header",
             "description": "The token issued to the current user."
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "type": "string",
+            "description": "Search word"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number",
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number",
+            "description": "Number of notices per page"
           }
         ],
         "security": [{ "Bearer": [] }],
@@ -674,6 +692,24 @@
               "format": "bearer"
             },
             "description": "The usesr's token for get user's notices."
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "type": "string",
+            "description": "Search word"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number",
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number",
+            "description": "Number of notices per page"
           }
         ],
         "security": [{ "Bearer": [] }],
@@ -750,12 +786,12 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetAllNoticesResponse"
+                  "$ref": "#/components/schemas/AddUserNoticeResponse"
                 }
               }
             }
@@ -1370,6 +1406,11 @@
               "description": "Pet's price",
               "example": 1000
             },
+            "views": {
+              "type": "number",
+              "description": "Number of views notice",
+              "example": 255
+            },
             "owner": {
               "type": "string",
               "description": "User's id who created the notice",
@@ -1398,6 +1439,7 @@
             "sex": "female",
             "comment": "Active dog",
             "price": 1000,
+            "views": 255,
             "owner": "64e0e0bcc4d8d3a91d3aa90c",
             "usersAddToFavorite": [
               "64e2483e058910c38b98f16d",
@@ -1416,6 +1458,7 @@
             "sex": "female",
             "comment": "Domestic cat",
             "price": 100,
+            "views": 143,
             "owner": "64e0e0bcc4d8d3a91d3aa90c",
             "usersAddToFavorite": [
               "64e2483e058910c38b98f16d",
@@ -1481,6 +1524,11 @@
             "type": "number",
             "description": "Pet's price",
             "example": 1000
+          },        
+          "views": {
+            "type": "number",
+            "description": "Number of views notice",
+            "example": 255
           },
           "owner": {
             "type": "object",
@@ -1512,6 +1560,7 @@
           "localion": "Sumy",
           "sex": "girl",
           "price": 1000,
+          "views": 255,
           "owner": {
             "_id": "64e5b5a31412cc124cf26063",
             "name": "LuizaSunshine",
@@ -1583,6 +1632,11 @@
               "description": "Pet's price",
               "example": 1000
             },
+            "views": {
+              "type": "number",
+              "description": "Number of views notice",
+              "example":255
+            },
             "owner": {
               "type": "object",
               "description": "User's id who created the notice",
@@ -1615,6 +1669,7 @@
             "localion": "Sumy",
             "sex": "girl",
             "price": 1000,
+            "views": 255,
             "owner": {
               "_id": "64e5b5a31412cc124cf26063",
               "name": "LuizaSunshine",
@@ -1637,6 +1692,7 @@
             "location": "Bakhmut",
             "sex": "girl",
             "price": 12,
+            "views": 278,
             "owner": {
               "_id": "64e326aca9a1b5e141680962",
               "name": "Mykola",
@@ -1722,6 +1778,11 @@
               "description": "Pet's price",
               "example": 1000
             },
+            "views": {
+              "type": "number",
+              "description": "Number of views notice",
+              "example":255
+            },
             "owner": {
               "type": "string",
               "description": "User's id who created the notice",
@@ -1743,34 +1804,59 @@
                 }
               ]
             }
-          },
-          "example": {
-            "_id": "52e10d144a3a60fc7905bf79",
-            "category": "sell",
-            "title": "Reliable friend",
-            "name": "Nice ones",
-            "type": "German Shepherd",
-            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-            "location": "Sumy",
-            "birthday": "15-04-2015",
-            "sex": "female",
-            "comment": "Active dog",
-            "price": 1000,
-            "owner": "64e0e0bcc4d8d3a91d3aa90c",
-            "usersAddToFavorite": [
-              {
-                "_id": "64e2483e058910c38b98f16d",
-                "name": "Mykola",
-                "email": "user@example.com"
-              },
-              {
-                "_id": "64e0e0bcc4d8d3a91d3aa90c",
-                "name": "Mykola",
-                "email": "nickkuts888@gmail.com"
-              }
-            ]
           }
-        }
+        },
+        "example": [
+            {
+              "_id": "52e10d144a3a60fc7905bf79",
+              "category": "sell",
+              "title": "Reliable friend",
+              "name": "Nice ones",
+              "type": "German Shepherd",
+              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+              "location": "Sumy",
+              "birthday": "15-04-2015",
+              "sex": "female",
+              "comment": "Active dog",
+              "price": 1000,
+              "views": 255,
+              "owner": "64e0e0bcc4d8d3a91d3aa90c",
+              "usersAddToFavorite": [
+                {
+                  "_id": "64e2483e058910c38b98f16d",
+                  "name": "Mykola",
+                  "email": "user@example.com"
+                },
+                {
+                  "_id": "64e0e0bcc4d8d3a91d3aa90c",
+                  "name": "Mykola",
+                  "email": "nickkuts888@gmail.com"
+                }
+              ]
+            },
+            {
+              "_id": "64e38375235f29c7be1aeb9f",
+              "category": "sell",
+              "title": "Gold fish",
+              "name": "Eva",
+              "birthday": "30-12-2012",
+              "type": "fish",
+              "comment": "lucky fish",
+              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+              "location": "Bakhmut",
+              "sex": "girl",
+              "price": 12,
+              "views": 278,
+              "owner": "64e0e0bcc4d8d3a91d3aa90c",
+              "usersAddToFavorite": [
+                {
+                  "_id": "64e2483e058910c38b98f16d",
+                  "name": "Mykola",
+                  "email": "user@example.com"
+                }
+              ]
+            }
+          ]  
       },
       "RemoveFromFavoriteResponse": {
         "type": "object",
@@ -1855,6 +1941,97 @@
           "sex": "female",
           "comment": "Active dog",
           "price": 1000
+        }
+      },
+      "AddUserNoticeResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Notice's id",
+            "example": "64e10d144a3a60fc7905bf79"
+          },
+          "category": {
+            "type": "string",
+            "description": "Notice's category",
+            "example": "sell"
+          },
+          "title": {
+            "type": "string",
+            "description": "Notice's title",
+            "example": "Reliable friend"
+          },
+          "name": {
+            "type": "string",
+            "description": "Pet's name",
+            "example": "Nice ones"
+          },
+          "type": {
+            "type": "string",
+            "description": "Pet's type",
+            "example": "German Shepherd"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "Pet's avatar url",
+            "example": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg"
+          },
+          "location": {
+            "type": "string",
+            "description": "Pet's location",
+            "example": "Sumy"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "Pet's birthday",
+            "example": "15-04-2015"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Pet's gender",
+            "example": "female"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Notice's comment",
+            "example": "Active dog"
+          },
+          "price": {
+            "type": "number",
+            "description": "Pet's price",
+            "example": 1000
+          },        
+          "views": {
+            "type": "number",
+            "description": "Number of views notice",
+            "example": 0
+          },
+          "owner": {
+            "type": "object",
+            "description": "User's id who created the notice",
+            "example": "64e5b5a31412cc124cf26063"
+          },
+          "usersAddToFavorite": {
+            "type": "array",
+            "description": "Users who added the notice in favorites",
+            "example": []
+          }
+        },
+        "example": {
+          "_id": "64e103c48f5f51dbeffcc9cb",
+          "category": "sell",
+          "title": "test",
+          "name": "Naisy",
+          "dateOfBirth": "15-04-2015",
+          "type": "dog",
+          "comment": "Active",
+          "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+          "localion": "Sumy",
+          "sex": "girl",
+          "price": 1000,
+          "views": 0,
+          "owner": "64e5b5a31412cc124cf26063",
+          "usersAddToFavorite": []
         }
       },
       "UserAndPets": {
