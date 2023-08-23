@@ -32,6 +32,10 @@
     {
       "name": "Friends",
       "description": "Our Friends endpoints"
+    },
+    {
+      "name": "News",
+      "description": "News endpoints"
     }
   ],
   "paths": {
@@ -588,18 +592,18 @@
           "401": {
             "description": "Not authorized"
           },
-        "404": {
-          "description": "Not found"
-        },
-        "409": {
-          "description": "The notice is already in the list of favorites"
-        },
-        "500": {
-          "description": "Server error"
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "The notice is already in the list of favorites"
+          },
+          "500": {
+            "description": "Server error"
+          }
         }
       }
-    }
-  },
+    },
     "/api/notices/{noticeId}/nofavorite": {
       "patch": {
         "tags": ["Notices"],
@@ -613,12 +617,13 @@
             "description": "The token issued to the current user."
           },
           {
-          "in": "path",
-          "name": "noticeId",
-          "required": true,
-          "type":  "string",
-          "description": "Notice's id"
-        }],
+            "in": "path",
+            "name": "noticeId",
+            "required": true,
+            "type": "string",
+            "description": "Notice's id"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "201": {
@@ -642,8 +647,8 @@
             }
           },
           "401": {
-              "description": "Not authorized"
-            },
+            "description": "Not authorized"
+          },
           "404": {
             "description": "Not found"
           },
@@ -911,6 +916,47 @@
           },
           "400": {
             "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "/api/news": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Get all news by search query",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "type": "string",
+            "description": "Search word"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number",
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number",
+            "description": "Number of news per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -2066,6 +2112,65 @@
           ],
           "phone": "+380442900329",
           "email": "hello@happypaw.ua"
+        }
+      },
+      "NewsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "News id",
+              "example": "64e5d460c4b93da54d791918"
+            },
+            "imgUrl": {
+              "type": "string",
+              "description": "News image",
+              "example": "https://www.nytimes.com/images/2022/12/15/multimedia/15ny-petstore-1-a63a/15ny-petstore-1-a63a-blog480.jpg"
+            },
+            "title": {
+              "type": "string",
+              "description": "News title",
+              "example": "New York Bans Pet Stores From Selling Dogs, Cats and Rabbits"
+            },
+            "text": {
+              "type": "string",
+              "description": "News text",
+              "example": "The ban, which takes effect in December 2024, is meant to prevent the sale of animals raised by commercial breeders accused of keeping them in inhumane conditions."
+            },
+            "date": {
+              "type": "string",
+              "description": "News date",
+              "example": "2022-12-15T18:16:51+0000"
+            },
+            "url": {
+              "type": "string",
+              "description": "News url",
+              "example": "https://www.nytimes.com/2022/12/15/nyregion/pet-store-ban-ny.html"
+            }
+          }
+        },
+        "example": {
+          "totalPages": 1,
+          "news": [
+            {
+              "_id": "64e5d460c4b93da54d791918",
+              "imgUrl": "https://www.nytimes.com/images/2022/12/15/multimedia/15ny-petstore-1-a63a/15ny-petstore-1-a63a-blog480.jpg",
+              "title": "New York Bans Pet Stores From Selling Dogs, Cats and Rabbits",
+              "text": "The ban, which takes effect in December 2024, is meant to prevent the sale of animals raised by commercial breeders accused of keeping them in inhumane conditions.",
+              "date": "2022-12-15T18:16:51+0000",
+              "url": "https://www.nytimes.com/2022/12/15/nyregion/pet-store-ban-ny.html"
+            },
+            {
+              "_id": "64e5d460c4b93da54d791927",
+              "imgUrl": "https://www.nytimes.com/images/2023/01/06/crosswords/06wordplay-dogs/06wordplay-dogs-blog480.jpg",
+              "title": "Pet Dogs and Cats",
+              "text": "Erica Hsiung Wojcik opens our solving weekend.",
+              "date": "2023-01-06T03:00:05+0000",
+              "url": "https://www.nytimes.com/2023/01/05/crosswords/daily-puzzle-2023-01-06.html"
+            }
+          ]
         }
       }
     }
