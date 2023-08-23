@@ -14,12 +14,12 @@ const getAll = async (req, res) => {
 
   if (search) {
     result = await Notice.find({ category, title: { $regex: search, $options: "i" } },
-      "-createdAt -updatedAt -usersAddToFavorite",
+      "-createdAt -updatedAt",
       { skip, limit }
     );
   } else {
     result = await Notice.find({ category }, 
-      "-createdAt -updatedAt -usersAddToFavorite", 
+      "-createdAt -updatedAt", 
       { skip, limit }
     );
   }
@@ -33,7 +33,8 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   const { noticeId } = req.params;
   const result = await Notice.findOne({ _id: noticeId }, 
-    "-createdAt -updatedAt -usersAddToFavorite");
+    "-createdAt -updatedAt")
+      .populate('owner', 'email name phone');
 
   if (!result) {
     throw HttpError(404, "Not found");
@@ -67,7 +68,7 @@ const getFavorite = async (req, res) => {
   
   const result = await Notice.find({ usersAddToFavorite: _id },
     "-createdAt -updatedAt")
-  .populate('usersAddToFavorite', 'email name phone');
+    .populate('owner', 'email name phone');
 
   if (!result) {
     throw HttpError(404, "Not found");
@@ -107,20 +108,22 @@ const add = async (req, res) => {
     owner,
     avatarURL: image.url,
   });
+
   res.status(201).json(result);
 };
 
-const getUsersNotices = async(req, res) => {
-        const {_id} = req.user;
-        const user = await User.findById(_id);
+const get = async(req, res) => {
+    const {_id} = req.user;
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-          }
+    const result = await Notice.find({owner: _id},
+      "-createdAt -updatedAt")
+      .populate('usersAddToFavorite', 'email name phone');
 
-        const usersNotices = await Notice.find({owner: _id});
+    if (result.length === 0) {
+      throw HttpError(404, "Not found");
+    }
 
-        return res.json({usersNotices})
+    res.status(200).json(result);
 };
 
 const removeById = async (req, res) => {
@@ -133,7 +136,6 @@ const removeById = async (req, res) => {
     throw HttpError (404, 'Not found')
   } 
   else {
-    console.log(notice.owner.equals(_id));
     if (!notice.owner.equals(_id)) {
       throw HttpError (404, 'Not found')
     }
@@ -156,6 +158,6 @@ module.exports = {
     getFavorite: ctrlWrapper(getFavorite),
     removeFromFavorite: ctrlWrapper(removeFromFavorite),
     add: ctrlWrapper(add),
-    getUsersNotices:ctrlWrapper(getUsersNotices),
+    get:ctrlWrapper(get),
     removeById: ctrlWrapper(removeById),
 };
