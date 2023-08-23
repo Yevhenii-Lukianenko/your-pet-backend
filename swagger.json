@@ -750,7 +750,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetByIdNoticeResponse"
+                  "$ref": "#/components/schemas/GetAllNoticesResponse"
                 }
               }
             }
@@ -1328,6 +1328,14 @@
               "type": "string",
               "description": "User's id who created the notice",
               "example": "64e0e0bcc4d8d3a91d3aa90c"
+            },
+            "usersAddToFavorite": {
+              "type": "array",
+              "description": "Users who added the notice in favorites",
+              "example": [
+                "64e2483e058910c38b98f16d",
+                "64e0e0bcc4d8d3a91d3aa90c"
+              ]
             }
           }
         },
@@ -1344,11 +1352,15 @@
             "sex": "female",
             "comment": "Active dog",
             "price": 1000,
-            "owner": "64e0e0bcc4d8d3a91d3aa90c"
+            "owner": "64e0e0bcc4d8d3a91d3aa90c",
+            "usersAddToFavorite": [
+              "64e2483e058910c38b98f16d",
+              "64e0e0bcc4d8d3a91d3aa90c"
+            ]
           },
           {
             "_id": "64e103c48f5f51dbeffcc9cb",
-            "category": "lost-found",
+            "category": "sell",
             "title": "A cheerful friend",
             "name": "Point",
             "type": "Cat",
@@ -1357,7 +1369,12 @@
             "birthday": "28-08-2022",
             "sex": "female",
             "comment": "Domestic cat",
-            "owner": "64e0e0bcc4d8d3a91d3aa90c"
+            "price": 100,
+            "owner": "64e0e0bcc4d8d3a91d3aa90c",
+            "usersAddToFavorite": [
+              "64e2483e058910c38b98f16d",
+              "64e0e0bcc4d8d3a91d3aa90c"
+            ]
           }
         ]
       },
@@ -1420,24 +1437,44 @@
             "example": 1000
           },
           "owner": {
-            "type": "string",
+            "type": "object",
             "description": "User's id who created the notice",
-            "example": "64e0e0bcc4d8d3a91d3aa90c"
+            "example": {
+              "_id": "64e5b5a31412cc124cf26063",
+              "name": "LuizaSunshine",
+              "email": "luiza@mail.com"
+            }
+          },
+          "usersAddToFavorite": {
+            "type": "array",
+            "description": "Users who added the notice in favorites",
+            "example": [
+              "64e5eb10b5c3ed50f3466cc5",
+              "64e2483e058910c38b98f16d"
+            ]
           }
         },
         "example": {
-          "_id": "64e10d144a3a60fc7905bf79",
+          "_id": "64e103c48f5f51dbeffcc9cb",
           "category": "sell",
-          "title": "Reliable friend",
-          "name": "Nice ones",
-          "type": "German Shepherd",
+          "title": "test",
+          "name": "Naisy",
+          "dateOfBirth": "15-04-2015",
+          "type": "dog",
+          "comment": "Active",
           "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-          "location": "Sumy",
-          "birthday": "15-04-2015",
-          "sex": "female",
-          "comment": "Active dog",
+          "localion": "Sumy",
+          "sex": "girl",
           "price": 1000,
-          "owner": "64e0e0bcc4d8d3a91d3aa90c"
+          "owner": {
+            "_id": "64e5b5a31412cc124cf26063",
+            "name": "LuizaSunshine",
+            "email": "luiza@mail.com"
+          },
+          "usersAddToFavorite": [
+              "64e5eb10b5c3ed50f3466cc5",
+              "64e2483e058910c38b98f16d"
+          ]
         }
       },
       "GetFavoriteNoticesResponse": {
@@ -1501,24 +1538,20 @@
               "example": 1000
             },
             "owner": {
-              "type": "string",
+              "type": "object",
               "description": "User's id who created the notice",
-              "example": "64e0e0bcc4d8d3a91d3aa90c"
+              "example": {
+                "_id": "64e5b5a31412cc124cf26063",
+                "name": "LuizaSunshine",
+                "email": "luiza@mail.com"
+              }
             },
             "usersAddToFavorite": {
               "type": "array",
               "description": "Users who added the notice in favorites",
               "example": [
-                {
-                  "_id": "64e2483e058910c38b98f16d",
-                  "name": "Mykola",
-                  "email": "user@example.com"
-                },
-                {
-                  "_id": "64e0e0bcc4d8d3a91d3aa90c",
-                  "name": "Mykola",
-                  "email": "nickkuts888@gmail.com"
-                }
+                "64e5eb10b5c3ed50f3466cc5",
+                "64e2483e058910c38b98f16d"
               ]
             }
           }
@@ -1536,13 +1569,14 @@
             "localion": "Sumy",
             "sex": "girl",
             "price": 1000,
-            "owner": "64e0e0bcc4d8d3a91d3aa90c",
+            "owner": {
+              "_id": "64e5b5a31412cc124cf26063",
+              "name": "LuizaSunshine",
+              "email": "luiza@mail.com"
+            },
             "usersAddToFavorite": [
-              {
-                "_id": "64e0e0bcc4d8d3a91d3aa90c",
-                "name": "Mykola",
-                "email": "nickkuts888@gmail.com"
-              }
+                "64e5eb10b5c3ed50f3466cc5",
+                "64e2483e058910c38b98f16d"
             ]
           },
           {
@@ -1557,18 +1591,14 @@
             "location": "Bakhmut",
             "sex": "girl",
             "price": 12,
-            "owner": "64e326aca9a1b5e141680962",
-            "usersAddToFavorite": [
-              {
-                "_id": "64e2483e058910c38b98f16d",
-                "name": "Mykola",
-                "email": "user@example.com"
-              },
-              {
-                "_id": "64e0e0bcc4d8d3a91d3aa90c",
-                "name": "Mykola",
+            "owner": {
+              "_id": "64e326aca9a1b5e141680962",
+              "name": "Mykola",
                 "email": "nickkuts888@gmail.com"
-              }
+            },
+            "usersAddToFavorite": [
+                "64e5eb10b5c3ed50f3466cc5", 
+                "64e2483e058910c38b98f16d"
             ]
           }
         ]
@@ -1650,6 +1680,22 @@
               "type": "string",
               "description": "User's id who created the notice",
               "example": "64e0e0bcc4d8d3a91d3aa90c"
+            },
+            "usersAddToFavorite": {
+              "type": "array",
+              "description": "Users who added the notice in favorites",
+              "example": [
+                {
+                  "_id": "64e2483e058910c38b98f16d",
+                  "name": "Mykola",
+                  "email": "user@example.com"
+                },
+                {
+                  "_id": "64e0e0bcc4d8d3a91d3aa90c",
+                  "name": "Mykola",
+                  "email": "nickkuts888@gmail.com"
+                }
+              ]
             }
           },
           "example": {
@@ -1664,7 +1710,19 @@
             "sex": "female",
             "comment": "Active dog",
             "price": 1000,
-            "owner": "64e0e0bcc4d8d3a91d3aa90c"
+            "owner": "64e0e0bcc4d8d3a91d3aa90c",
+            "usersAddToFavorite": [
+              {
+                "_id": "64e2483e058910c38b98f16d",
+                "name": "Mykola",
+                "email": "user@example.com"
+              },
+              {
+                "_id": "64e0e0bcc4d8d3a91d3aa90c",
+                "name": "Mykola",
+                "email": "nickkuts888@gmail.com"
+              }
+            ]
           }
         }
       },
