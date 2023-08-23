@@ -112,7 +112,7 @@ const add = async (req, res) => {
   res.status(201).json(result);
 };
 
-const get = async(req, res) => {
+const getUsersNotices = async(req, res) => {
     const {_id} = req.user;
 
     const result = await Notice.find({owner: _id},
@@ -158,6 +158,6 @@ module.exports = {
     getFavorite: ctrlWrapper(getFavorite),
     removeFromFavorite: ctrlWrapper(removeFromFavorite),
     add: ctrlWrapper(add),
-    get:ctrlWrapper(get),
+    getUsersNotices:ctrlWrapper(getUsersNotices),
     removeById: ctrlWrapper(removeById),
 };
