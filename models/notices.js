@@ -51,6 +51,11 @@ const noticeSchema = new Schema(
         message: "The number must be greater than 0",
       },
     },
+    views: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",

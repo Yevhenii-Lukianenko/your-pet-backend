@@ -28,10 +28,10 @@ router.post(
   upload.single("avatarURL"),
   imageProcessing,
   validateBody(schemas.addSchema),
-  notices.add
+  notices.addUserNotice
 );
 
-router.get("/", authenticate,  notices.getUsersNotices);
+router.get("/", authenticate,  notices.getUserNotices);
 
 router.delete("/:noticeId", authenticate, validNoticeId, notices.removeById);
 
