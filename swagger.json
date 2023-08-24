@@ -1426,46 +1426,49 @@
             }
           }
         },
-        "example": [
-          {
-            "_id": "64e10d144a3a60fc7905bf79",
-            "category": "sell",
-            "title": "Reliable friend",
-            "name": "Nice ones",
-            "type": "German Shepherd",
-            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-            "location": "Sumy",
-            "birthday": "15-04-2015",
-            "sex": "female",
-            "comment": "Active dog",
-            "price": 1000,
-            "views": 255,
-            "owner": "64e0e0bcc4d8d3a91d3aa90c",
-            "usersAddToFavorite": [
-              "64e2483e058910c38b98f16d",
-              "64e0e0bcc4d8d3a91d3aa90c"
-            ]
-          },
-          {
-            "_id": "64e103c48f5f51dbeffcc9cb",
-            "category": "sell",
-            "title": "A cheerful friend",
-            "name": "Point",
-            "type": "Cat",
-            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-            "location": "Sumy",
-            "birthday": "28-08-2022",
-            "sex": "female",
-            "comment": "Domestic cat",
-            "price": 100,
-            "views": 143,
-            "owner": "64e0e0bcc4d8d3a91d3aa90c",
-            "usersAddToFavorite": [
-              "64e2483e058910c38b98f16d",
-              "64e0e0bcc4d8d3a91d3aa90c"
-            ]
-          }
-        ]
+        "example": {
+          "totalPages": 1,
+          "notices": [
+            {
+              "_id": "64e10d144a3a60fc7905bf79",
+              "category": "sell",
+              "title": "Reliable friend",
+              "name": "Nice ones",
+              "type": "German Shepherd",
+              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+              "location": "Sumy",
+              "birthday": "15-04-2015",
+              "sex": "female",
+              "comment": "Active dog",
+              "price": 1000,
+              "views": 255,
+              "owner": "64e0e0bcc4d8d3a91d3aa90c",
+              "usersAddToFavorite": [
+                "64e2483e058910c38b98f16d",
+                "64e0e0bcc4d8d3a91d3aa90c"
+              ]
+            },
+            {
+              "_id": "64e103c48f5f51dbeffcc9cb",
+              "category": "sell",
+              "title": "A cheerful friend",
+              "name": "Point",
+              "type": "Cat",
+              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+              "location": "Sumy",
+              "birthday": "28-08-2022",
+              "sex": "female",
+              "comment": "Domestic cat",
+              "price": 100,
+              "views": 143,
+              "owner": "64e0e0bcc4d8d3a91d3aa90c",
+              "usersAddToFavorite": [
+                "64e2483e058910c38b98f16d",
+                "64e0e0bcc4d8d3a91d3aa90c"
+              ]
+            }
+          ]
+        }
       },
       "GetByIdNoticeResponse": {
         "type": "object",
@@ -1524,7 +1527,7 @@
             "type": "number",
             "description": "Pet's price",
             "example": 1000
-          },        
+          },
           "views": {
             "type": "number",
             "description": "Number of views notice",
@@ -1542,10 +1545,7 @@
           "usersAddToFavorite": {
             "type": "array",
             "description": "Users who added the notice in favorites",
-            "example": [
-              "64e5eb10b5c3ed50f3466cc5",
-              "64e2483e058910c38b98f16d"
-            ]
+            "example": ["64e5eb10b5c3ed50f3466cc5", "64e2483e058910c38b98f16d"]
           }
         },
         "example": {
@@ -1567,8 +1567,8 @@
             "email": "luiza@mail.com"
           },
           "usersAddToFavorite": [
-              "64e5eb10b5c3ed50f3466cc5",
-              "64e2483e058910c38b98f16d"
+            "64e5eb10b5c3ed50f3466cc5",
+            "64e2483e058910c38b98f16d"
           ]
         }
       },
@@ -1635,7 +1635,7 @@
             "views": {
               "type": "number",
               "description": "Number of views notice",
-              "example":255
+              "example": 255
             },
             "owner": {
               "type": "object",
@@ -1656,54 +1656,57 @@
             }
           }
         },
-        "example": [
-          {
-            "_id": "64e103c48f5f51dbeffcc9cb",
-            "category": "sell",
-            "title": "test",
-            "name": "Naisy",
-            "dateOfBirth": "15-04-2015",
-            "type": "dog",
-            "comment": "Active",
-            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-            "localion": "Sumy",
-            "sex": "girl",
-            "price": 1000,
-            "views": 255,
-            "owner": {
-              "_id": "64e5b5a31412cc124cf26063",
-              "name": "LuizaSunshine",
-              "email": "luiza@mail.com"
-            },
-            "usersAddToFavorite": [
+        "example": {
+          "totalPages": 1,
+          "notices": [
+            {
+              "_id": "64e103c48f5f51dbeffcc9cb",
+              "category": "sell",
+              "title": "test",
+              "name": "Naisy",
+              "dateOfBirth": "15-04-2015",
+              "type": "dog",
+              "comment": "Active",
+              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+              "localion": "Sumy",
+              "sex": "girl",
+              "price": 1000,
+              "views": 255,
+              "owner": {
+                "_id": "64e5b5a31412cc124cf26063",
+                "name": "LuizaSunshine",
+                "email": "luiza@mail.com"
+              },
+              "usersAddToFavorite": [
                 "64e5eb10b5c3ed50f3466cc5",
                 "64e2483e058910c38b98f16d"
-            ]
-          },
-          {
-            "_id": "64e38375235f29c7be1aeb9f",
-            "category": "sell",
-            "title": "Gold fish",
-            "name": "Eva",
-            "birthday": "30-12-2012",
-            "type": "fish",
-            "comment": "lucky fish",
-            "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
-            "location": "Bakhmut",
-            "sex": "girl",
-            "price": 12,
-            "views": 278,
-            "owner": {
-              "_id": "64e326aca9a1b5e141680962",
-              "name": "Mykola",
-                "email": "nickkuts888@gmail.com"
+              ]
             },
-            "usersAddToFavorite": [
-                "64e5eb10b5c3ed50f3466cc5", 
+            {
+              "_id": "64e38375235f29c7be1aeb9f",
+              "category": "sell",
+              "title": "Gold fish",
+              "name": "Eva",
+              "birthday": "30-12-2012",
+              "type": "fish",
+              "comment": "lucky fish",
+              "avatarURL": "http://res.cloudinary.com/qwsdftyuio/image/upload/qwsdfghjk/qwsdfghj.jpg",
+              "location": "Bakhmut",
+              "sex": "girl",
+              "price": 12,
+              "views": 278,
+              "owner": {
+                "_id": "64e326aca9a1b5e141680962",
+                "name": "Mykola",
+                "email": "nickkuts888@gmail.com"
+              },
+              "usersAddToFavorite": [
+                "64e5eb10b5c3ed50f3466cc5",
                 "64e2483e058910c38b98f16d"
-            ]
-          }
-        ]
+              ]
+            }
+          ]
+        }
       },
       "AddToFavoriteResponse": {
         "type": "object",
@@ -1781,7 +1784,7 @@
             "views": {
               "type": "number",
               "description": "Number of views notice",
-              "example":255
+              "example": 255
             },
             "owner": {
               "type": "string",
@@ -1806,7 +1809,9 @@
             }
           }
         },
-        "example": [
+        "example": {
+          "totalPages": 1,
+          "notices": [
             {
               "_id": "52e10d144a3a60fc7905bf79",
               "category": "sell",
@@ -1856,7 +1861,8 @@
                 }
               ]
             }
-          ]  
+          ]
+        }
       },
       "RemoveFromFavoriteResponse": {
         "type": "object",
@@ -2000,7 +2006,7 @@
             "type": "number",
             "description": "Pet's price",
             "example": 1000
-          },        
+          },
           "views": {
             "type": "number",
             "description": "Number of views notice",
@@ -2350,42 +2356,6 @@
         }
       },
       "NewsResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "News id",
-              "example": "64e5d460c4b93da54d791918"
-            },
-            "imgUrl": {
-              "type": "string",
-              "description": "News image",
-              "example": "https://www.nytimes.com/images/2022/12/15/multimedia/15ny-petstore-1-a63a/15ny-petstore-1-a63a-blog480.jpg"
-            },
-            "title": {
-              "type": "string",
-              "description": "News title",
-              "example": "New York Bans Pet Stores From Selling Dogs, Cats and Rabbits"
-            },
-            "text": {
-              "type": "string",
-              "description": "News text",
-              "example": "The ban, which takes effect in December 2024, is meant to prevent the sale of animals raised by commercial breeders accused of keeping them in inhumane conditions."
-            },
-            "date": {
-              "type": "string",
-              "description": "News date",
-              "example": "2022-12-15T18:16:51+0000"
-            },
-            "url": {
-              "type": "string",
-              "description": "News url",
-              "example": "https://www.nytimes.com/2022/12/15/nyregion/pet-store-ban-ny.html"
-            }
-          }
-        },
         "example": {
           "totalPages": 1,
           "news": [
