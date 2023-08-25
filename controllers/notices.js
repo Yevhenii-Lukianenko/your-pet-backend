@@ -18,6 +18,7 @@ const getAll = async (req, res) => {
       "-createdAt -updatedAt",
       { skip, limit }
     );
+    
     totalCount = await Notice.countDocuments({
       category,
       title: { $regex: search, $options: "i" },
@@ -27,6 +28,7 @@ const getAll = async (req, res) => {
       skip,
       limit,
     });
+    
     totalCount = await Notice.countDocuments({ category });
   }
 
@@ -92,6 +94,7 @@ const getFavorite = async (req, res) => {
       "-createdAt -updatedAt",
       { skip, limit }
     ).populate("owner", "email name phone");
+    
     totalCount = await Notice.countDocuments({
       usersAddToFavorite: _id,
       title: { $regex: search, $options: "i" },
@@ -102,6 +105,7 @@ const getFavorite = async (req, res) => {
       "-createdAt -updatedAt",
       { skip, limit }
     ).populate("owner", "email name phone");
+    
     totalCount = await Notice.countDocuments({
       usersAddToFavorite: _id,
     });
@@ -168,6 +172,7 @@ const getUserNotices = async (req, res) => {
       "-createdAt -updatedAt",
       { skip, limit }
     ).populate("usersAddToFavorite", "email name phone");
+    
     totalCount = await Notice.countDocuments({
       owner: _id,
       title: { $regex: search, $options: "i" },
@@ -177,6 +182,7 @@ const getUserNotices = async (req, res) => {
       skip,
       limit,
     }).populate("usersAddToFavorite", "email name phone");
+    
     totalCount = await Notice.countDocuments({ owner: _id });
   }
 
