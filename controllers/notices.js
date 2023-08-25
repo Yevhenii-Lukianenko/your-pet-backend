@@ -2,7 +2,10 @@ const { Notice } = require("../models/notices");
 
 const { HttpError, ctrlWrapper } = require("../helpers");
 
-const { uploadImageToCloudinary } = require("../utils");
+const {
+  uploadImageToCloudinary,
+  deleteImageFromCloudinary,
+} = require("../utils");
 
 const getAll = async (req, res) => {
   const { category } = req.params;
@@ -191,7 +194,7 @@ const getUserNotices = async (req, res) => {
 
 const removeById = async (req, res) => {
   const { noticeId } = req.params;
-  const { _id } = req.user;
+  const { _id, avatarURL } = req.user;
 
   const notice = await Notice.findById(noticeId);
 
@@ -205,6 +208,10 @@ const removeById = async (req, res) => {
 
       if (!result) {
         throw HttpError(404, "Not found");
+      }
+
+      if (avatarURL) {
+        await deleteImageFromCloudinary(avatarURL);
       }
 
       res.status(200).json({ message: "Notice deleted successfully" });

@@ -93,8 +93,17 @@ const refresh = async (req, res) => {
 };
 
 const getCurrent = async (req, res) => {
-  const { _id, name, email, phone, birthday, city, accessToken, refreshToken } =
-    req.user;
+  const {
+    _id,
+    name,
+    email,
+    phone,
+    birthday,
+    city,
+    avatarURL,
+    accessToken,
+    refreshToken,
+  } = req.user;
   res.json({
     _id,
     name,
@@ -102,6 +111,7 @@ const getCurrent = async (req, res) => {
     phone,
     birthday,
     city,
+    avatarURL,
     accessToken,
     refreshToken,
   });
@@ -139,15 +149,13 @@ const updateProfile = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const { _id, avatarURL } = req.user;
-
   const { path } = req.file;
 
   const image = await uploadImageToCloudinary(path);
   await User.findByIdAndUpdate(_id, { avatarURL: image.url });
 
   if (avatarURL) {
-    const prevAvatarId = avatarURL.split("/").pop().slice(0, -4);
-    await deleteImageFromCloudinary(prevAvatarId);
+    await deleteImageFromCloudinary(avatarURL);
   }
 
   res.json({ avatarURL: image.url });

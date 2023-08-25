@@ -6,7 +6,7 @@ const {
   authenticate,
   validateBody,
   upload,
-  imageProcessing,
+  checkFileSize,
 } = require("../../middlewares");
 
 const { schemas } = require("../../models/user");
@@ -32,7 +32,7 @@ router.patch(
   "/profile/avatar",
   authenticate,
   upload.single("avatar"),
-  imageProcessing,
+  checkFileSize,
   user.updateAvatar
 );
 

@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { upload, imageProcessing } = require("../../middlewares");
-
-const { authenticate, validateBody } = require("../../middlewares");
+const {
+  authenticate,
+  validateBody,
+  upload,
+  checkFileSize,
+} = require("../../middlewares");
 const { schemas } = require("../../models/pets");
 
 const pets = require("../../controllers/pets");
@@ -13,7 +16,7 @@ router.post(
   "/",
   authenticate,
   upload.single("avatarPet"),
-  imageProcessing,
+  checkFileSize,
   validateBody(schemas.addSchema),
   pets.add
 );

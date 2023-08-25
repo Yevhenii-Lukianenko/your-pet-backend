@@ -1,5 +1,8 @@
 const { Pets } = require("../models/pets");
-const { uploadImageToCloudinary } = require("../utils");
+const {
+  uploadImageToCloudinary,
+  deleteImageFromCloudinary,
+} = require("../utils");
 
 const { ctrlWrapper, HttpError } = require("../helpers");
 
@@ -18,8 +21,12 @@ const getAll = async (req, res) => {
 const add = async (req, res) => {
   const { _id: owner } = req.user;
 
-  const { path: tempUpload } = req.file;
-  const image = await uploadImageToCloudinary(tempUpload);
+  if (!req.file) {
+    throw HttpError(400, "No added image");
+  }
+
+  const { path } = req.file;
+  const image = await uploadImageToCloudinary(path);
 
   const result = await Pets.create({
     ...req.body,
@@ -36,6 +43,7 @@ const remove = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not Found");
   }
+  await deleteImageFromCloudinary(result.avatarPet);
   res.json({
     message: "Delete success",
   });
