@@ -125,12 +125,12 @@ const logout = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const { _id } = req.user;
+  const { _id, email: userEmail } = req.user;
   const { name, email, phone, birthday, city } = req.body;
 
   if (email) {
     const user = await User.findOne({ email: email.toLowerCase() });
-    if (user) {
+    if (user && user.email !== userEmail) {
       throw HttpError(409, "Email in use");
     }
   }
