@@ -20,17 +20,10 @@ router.patch(
   "/:noticeId/favorite",
   authenticate,
   validNoticeId,
-  notices.addToFavorite
+  notices.updateFavoriteNotice
 );
 
 router.get("/favorite", authenticate, notices.getFavorite);
-
-router.patch(
-  "/:noticeId/nofavorite",
-  authenticate,
-  validNoticeId,
-  notices.removeFromFavorite
-);
 
 router.post(
   "/",
