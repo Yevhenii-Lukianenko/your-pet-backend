@@ -58,25 +58,38 @@ const getById = async (req, res) => {
   res.status(200).json(notice);
 };
 
-const addToFavorite = async (req, res) => {
+const updateFavoriteNotice = async (req, res) => {
   const { noticeId } = req.params;
   const { _id } = req.user;
 
-  const { usersAddToFavorite } = await Notice.findById(noticeId);
+  const notice = await Notice.findById(noticeId);
+
+  if (!notice) {
+    throw HttpError(400, `There are no notices with id ${noticeId}`);
+  }
+
+  const { usersAddToFavorite } = notice;
   const isUserInFavorite = usersAddToFavorite.some((userId) =>
     userId.equals(_id)
   );
 
-  if (isUserInFavorite) {
-    throw HttpError(409, "The notice is already in the list of favorites");
+  if (!isUserInFavorite) {
+    await Notice.findByIdAndUpdate(
+      noticeId,
+      {
+        $push: { usersAddToFavorite: _id },
+      },
+      { new: true }
+    );
+  } else {
+    await Notice.findByIdAndUpdate(
+      noticeId,
+      {
+        $pull: { usersAddToFavorite: _id },
+      },
+      { new: true }
+    );
   }
-  await Notice.findByIdAndUpdate(
-    noticeId,
-    {
-      $push: { usersAddToFavorite: _id },
-    },
-    { new: true }
-  );
 
   res.status(201).json({ userId: _id });
 };
@@ -117,29 +130,6 @@ const getFavorite = async (req, res) => {
   const totalPages = Math.ceil(totalCount / limit);
 
   res.json({ totalPages, notices: result });
-};
-
-const removeFromFavorite = async (req, res) => {
-  const { noticeId } = req.params;
-  const { _id } = req.user;
-
-  const { usersAddToFavorite } = await Notice.findById(noticeId);
-  const isUserInFavorite = usersAddToFavorite.some((userId) =>
-    userId.equals(_id)
-  );
-
-  if (!isUserInFavorite) {
-    throw HttpError(409, "The notice is not in the list of favorites");
-  }
-  await Notice.findByIdAndUpdate(
-    noticeId,
-    {
-      $pull: { usersAddToFavorite: _id },
-    },
-    { new: true }
-  );
-
-  res.status(201).json({ userId: _id });
 };
 
 const addUserNotice = async (req, res) => {
@@ -222,9 +212,8 @@ const removeById = async (req, res) => {
 module.exports = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
-  addToFavorite: ctrlWrapper(addToFavorite),
+  updateFavoriteNotice: ctrlWrapper(updateFavoriteNotice),
   getFavorite: ctrlWrapper(getFavorite),
-  removeFromFavorite: ctrlWrapper(removeFromFavorite),
   addUserNotice: ctrlWrapper(addUserNotice),
   getUserNotices: ctrlWrapper(getUserNotices),
   removeById: ctrlWrapper(removeById),

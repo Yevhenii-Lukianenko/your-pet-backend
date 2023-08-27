@@ -485,7 +485,7 @@
     "/api/notices/{noticeId}/favorite": {
       "patch": {
         "tags": ["Notices"],
-        "summary": "Add notice in favorites",
+        "summary": "Add or remove notice in favorites",
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
@@ -502,7 +502,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddToFavoriteResponse"
+                  "$ref": "#/components/schemas/UpdateFavoriteNoticeResponse"
                 }
               }
             }
@@ -522,59 +522,6 @@
           },
           "404": {
             "description": "Not found"
-          },
-          "409": {
-            "description": "The notice is already in the list of favorites"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
-    },
-    "/api/notices/{noticeId}/nofavorite": {
-      "patch": {
-        "tags": ["Notices"],
-        "summary": "Remove notice from favorites",
-        "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "noticeId",
-            "required": true,
-            "type": "string",
-            "description": "Notice's id"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RemoveFromFavoriteResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "${noticeId} is not a valid id"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Not authorized"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "The notice is not in the list of favorites"
           },
           "500": {
             "description": "Server error"
@@ -1604,12 +1551,12 @@
           ]
         }
       },
-      "AddToFavoriteResponse": {
+      "UpdateFavoriteNoticeResponse": {
         "type": "object",
         "properties": {
           "userId": {
             "type": "string",
-            "description": "UserId who added the notice to favorites",
+            "description": "UserId who added or removed the notice to favorites",
             "example": "64e2483e058910c38b98f16d"
           }
         },
@@ -1758,19 +1705,6 @@
               ]
             }
           ]
-        }
-      },
-      "RemoveFromFavoriteResponse": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string",
-            "description": "UserId who removed the notice from favorites",
-            "example": "64e2483e058910c38b98f16d"
-          }
-        },
-        "example": {
-          "userId": "64e2483e058910c38b98f16d"
         }
       },
       "AddNoticenRequest": {
