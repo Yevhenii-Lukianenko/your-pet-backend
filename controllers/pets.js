@@ -39,14 +39,18 @@ const add = async (req, res) => {
 
 const remove = async (req, res) => {
   const { id } = req.params;
-  const result = await Pets.findByIdAndDelete({ _id: id });
-  if (!result) {
+  const { _id } = req.user;
+
+  const isYourPet = await Pets.find({ _id: id, owner: _id });
+
+  if (isYourPet.length === 0) {
     throw HttpError(404, "Not Found");
   }
+
+  const result = await Pets.findByIdAndDelete({ _id: id });
   await deleteImageFromCloudinary(result.avatarPet);
-  res.json({
-    message: "Delete success",
-  });
+
+  res.json({ message: "Delete success" });
 };
 
 module.exports = {

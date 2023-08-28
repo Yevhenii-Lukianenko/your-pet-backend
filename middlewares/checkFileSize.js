@@ -8,7 +8,7 @@ const checkFileSize = async (req, res, next) => {
     next(HttpError(400, "No added image"));
   } else if (file.size > maxFileSize) {
     fs.unlink(file.path);
-    next(HttpError(400, "File size exceeded"));
+    next(HttpError(400, "File size exceeds 5 MB"));
   } else {
     next();
   }

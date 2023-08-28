@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://your-pet-backend-cmwy.onrender.com/" }],
+  "servers": [{ "url": "https://your-pet-backend-cmwy.onrender.com/api/" }],
   "tags": [
     {
       "name": "Auth",
@@ -39,7 +39,7 @@
     }
   ],
   "paths": {
-    "/api/auth/register": {
+    "/auth/register": {
       "post": {
         "tags": ["Auth"],
         "summary": "Create a new user",
@@ -75,7 +75,7 @@
         }
       }
     },
-    "/api/auth/login": {
+    "/auth/login": {
       "post": {
         "tags": ["Auth"],
         "summary": "Login user",
@@ -111,7 +111,7 @@
         }
       }
     },
-    "/api/auth/refresh": {
+    "/auth/refresh": {
       "post": {
         "tags": ["Auth"],
         "summary": "Refresh user's tokens",
@@ -144,7 +144,7 @@
         }
       }
     },
-    "/api/auth/logout": {
+    "/auth/logout": {
       "post": {
         "tags": ["Auth"],
         "summary": "Logout user",
@@ -159,7 +159,7 @@
         }
       }
     },
-    "/api/auth/current": {
+    "/auth/current": {
       "get": {
         "tags": ["Auth"],
         "summary": "Get information about the current user",
@@ -181,7 +181,7 @@
         }
       }
     },
-    "/api/auth/profile": {
+    "/auth/profile": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Updates information about the current user",
@@ -218,7 +218,7 @@
         }
       }
     },
-    "/api/auth/profile/avatar": {
+    "/auth/profile/avatar": {
       "patch": {
         "tags": ["Auth"],
         "summary": "Updates avatar of the current user",
@@ -251,7 +251,7 @@
         }
       }
     },
-    "/api/pets": {
+    "/pets": {
       "post": {
         "tags": ["Pets"],
         "summary": "Add a new pet",
@@ -304,7 +304,7 @@
         }
       }
     },
-    "/api/pets/{id}": {
+    "/pets/{id}": {
       "delete": {
         "tags": ["Pets"],
         "summary": "Delete pet by id",
@@ -334,7 +334,7 @@
         }
       }
     },
-    "/api/notices/category/{category}": {
+    "/notices/category/{category}": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get all notices by search query and category",
@@ -381,7 +381,7 @@
         }
       }
     },
-    "/api/notices/notice/{noticeId}": {
+    "/notices/notice/{noticeId}": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get by id notice",
@@ -424,7 +424,7 @@
         }
       }
     },
-    "/api/notices/favorite": {
+    "/notices/favorite": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get favorite notices",
@@ -482,7 +482,7 @@
         }
       }
     },
-    "/api/notices/{noticeId}/favorite": {
+    "/notices/{noticeId}/favorite": {
       "patch": {
         "tags": ["Notices"],
         "summary": "Add or remove notice in favorites",
@@ -529,7 +529,7 @@
         }
       }
     },
-    "/api/notices": {
+    "/notices": {
       "post": {
         "tags": ["Notices"],
         "summary": "Add a new notice",
@@ -626,7 +626,7 @@
         }
       }
     },
-    "/api/notices/{noticeId}": {
+    "/notices/{noticeId}": {
       "delete": {
         "tags": ["Notices"],
         "summary": "Delete user's notice by id",
@@ -672,7 +672,7 @@
         }
       }
     },
-    "/api/profile": {
+    "/profile": {
       "get": {
         "tags": ["User + Pets"],
         "summary": "Gets information about the user and one's pets",
@@ -697,7 +697,7 @@
         }
       }
     },
-    "/api/friends": {
+    "/friends": {
       "get": {
         "tags": ["Friends"],
         "summary": "Gets information about all our Friends",
@@ -718,7 +718,7 @@
         }
       }
     },
-    "/api/friends/{id}": {
+    "/friends/{id}": {
       "get": {
         "tags": ["Friends"],
         "summary": "Gets information about one of our Friends",
@@ -748,7 +748,7 @@
         }
       }
     },
-    "/api/news": {
+    "/news": {
       "get": {
         "tags": ["News"],
         "summary": "Get all news by search query",

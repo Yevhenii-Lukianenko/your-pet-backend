@@ -3,4 +3,20 @@ const {
   deleteImageFromCloudinary,
 } = require("./cloudinary");
 
-module.exports = { uploadImageToCloudinary, deleteImageFromCloudinary };
+const {
+  dateRegexp,
+  locationRegexp,
+  stringRegexp,
+  phoneRegexp,
+  workScheduleRegexp,
+} = require("./regexp");
+
+module.exports = {
+  uploadImageToCloudinary,
+  deleteImageFromCloudinary,
+  dateRegexp,
+  locationRegexp,
+  stringRegexp,
+  phoneRegexp,
+  workScheduleRegexp,
+};
