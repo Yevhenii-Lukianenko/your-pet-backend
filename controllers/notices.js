@@ -184,29 +184,18 @@ const getUserNotices = async (req, res) => {
 
 const removeById = async (req, res) => {
   const { noticeId } = req.params;
-  const { _id, avatarURL } = req.user;
+  const { _id } = req.user;
 
-  const notice = await Notice.findById(noticeId);
+  const notice = await Notice.find({ _id: noticeId, owner: _id });
 
-  if (!notice) {
+  if (notice.length === 0) {
     throw HttpError(404, "Not found");
-  } else {
-    if (!notice.owner.equals(_id)) {
-      throw HttpError(404, "Not found");
-    } else {
-      const result = await Notice.findByIdAndRemove(noticeId);
-
-      if (!result) {
-        throw HttpError(404, "Not found");
-      }
-
-      if (avatarURL) {
-        await deleteImageFromCloudinary(avatarURL);
-      }
-
-      res.status(200).json({ message: "Notice deleted successfully" });
-    }
   }
+
+  const result = await Notice.findByIdAndRemove(noticeId);
+  await deleteImageFromCloudinary(result.avatarURL);
+
+  res.status(200).json({ message: "Notice deleted successfully" });
 };
 
 module.exports = {

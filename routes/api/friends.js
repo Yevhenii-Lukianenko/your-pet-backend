@@ -3,8 +3,6 @@ const router = express.Router();
 
 const friends = require("../../controllers/ourFriends");
 
-router.get("/", friends.getAllFriends)
-
-router.get("/:id", friends.getInfo)
+router.get("/", friends.getAllFriends);
 
 module.exports = router;

@@ -1,6 +1,8 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
+const { dateRegexp, locationRegexp } = require("../utils");
+
 const noticeSchema = new Schema(
   {
     category: {
@@ -19,12 +21,11 @@ const noticeSchema = new Schema(
     birthday: {
       type: String,
       required: [true, "Set birthday for pet"],
-      match: /^\d{2}-\d{2}-\d{4}$/,
-      message: "Date of birth must be in the format DD-MM-YYYY",
+      match: dateRegexp,
     },
     type: {
       type: String,
-      required: [true, "Set type for pet"],
+      required: [true, "Set type of pet"],
     },
     comment: {
       type: String,
@@ -35,20 +36,22 @@ const noticeSchema = new Schema(
     location: {
       type: String,
       required: [true, "Set location for pet"],
-      match: /^[A-Z][a-z]+$/,
-      message: 'The city must be in the format "City"',
+      match: locationRegexp,
     },
     sex: {
       type: String,
+      enum: ["female", "male"],
       required: true,
     },
     price: {
       type: Number,
+      required: function () {
+        return this.category === "sell";
+      },
       validate: {
         validator: function (value) {
           return value > 0;
         },
-        message: "The number must be greater than 0",
       },
     },
     views: {
@@ -60,36 +63,80 @@ const noticeSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
-    usersAddToFavorite: [{
-      type: Schema.Types.ObjectId,
-      ref: "user"
-    }],
+    usersAddToFavorite: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   { versionKey: false, timestamps: true }
 );
 
 const addSchema = Joi.object({
-  category: Joi.string().required(),
-  title: Joi.string().required(),
-  name: Joi.string()
-    .min(2)
-    .max(16)
+  category: Joi.string()
+    .valid("sell", "lost-found", "in-good-hands")
     .required()
-    .messages({ "any.required": "missing required fields" }),
-  birthday: Joi.string()
-    .pattern(/^\d{2}-\d{2}-\d{4}$/)
-    .required(),
-  type: Joi.string().required(),
-  location: Joi.string()
-    .pattern(/^[A-Z][a-z]+$/)
-    .required(),
-  sex: Joi.string().required(),
-  comment: Joi.string().max(120),
-  price: Joi.number().integer().min(1),
+    .messages({
+      "string.base": "The category field must be a string.",
+      "any.required": "The category field is required.",
+      "string.valid":
+        "The category field must have a value of 'sell', 'lost-found', or 'in-good-hands'.",
+    }),
+  title: Joi.string().required().messages({
+    "string.base": "The title field must be a string.",
+    "any.required": "The title field is required.",
+  }),
+  name: Joi.string().min(2).max(16).required().messages({
+    "string.base": "The name field must be a string.",
+    "string.min": "The name must have at least 2 characters.",
+    "string.max": "The name must have at most 16 characters.",
+    "any.required": "The name field is required.",
+  }),
+  birthday: Joi.string().pattern(dateRegexp).required().messages({
+    "string.base": "The birthday field must be a string.",
+    "any.required": "The birthday field is required.",
+    "string.pattern.base": "Date of birth must be in the format DD-MM-YYYY",
+  }),
+  type: Joi.string().required().messages({
+    "string.base": "The type field must be a string.",
+    "any.required": "The type field is required.",
+  }),
+  location: Joi.string().pattern(locationRegexp).required().messages({
+    "string.base": "The location field must be a string.",
+    "any.required": "The location field is required.",
+    "string.pattern.base": 'The city must be in the format "City"',
+  }),
+  sex: Joi.string().valid("female", "male").required().messages({
+    "string.base": "The sex field must be a string.",
+    "string.valid": "The sex field must have a value of 'female', 'male'.",
+    "any.required": "The sex field is required.",
+  }),
+  comment: Joi.string().max(120).messages({
+    "string.base": "The comment field must be a string.",
+    "string.max": "The comment field must not exceed 120 characters.",
+  }),
+  price: Joi.number()
+    .integer()
+    .min(1)
+    .when("category", {
+      is: "sell",
+      then: Joi.number().integer().min(1).required().messages({
+        "number.base": "The price field must be a number.",
+        "number.integer": "The price field must be an integer.",
+        "number.min": "The number must be greater than 0",
+        "any.required": "The price field is required for 'sell' category.",
+      }),
+      otherwise: Joi.number().integer().min(1).messages({
+        "number.base": "The price field must be a number.",
+        "number.integer": "The price field must be an integer.",
+        "number.min": "The number must be greater than 0",
+      }),
+    }),
 });
 
 const schemas = {
-    addSchema,
+  addSchema,
 };
 
 const Notice = model("notice", noticeSchema);
