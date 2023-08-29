@@ -34,7 +34,7 @@ router.post(
   notices.addUserNotice
 );
 
-router.get("/", authenticate, notices.getUserNotices);
+router.get("/own", authenticate, notices.getUserNotices);
 
 router.delete("/:noticeId", authenticate, validNoticeId, notices.removeById);
 

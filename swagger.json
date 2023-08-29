@@ -2,11 +2,11 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0.0",
-    "title": "Swagger doc",
-    "description": "Documentation for server requests and responses",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
+    "title": "Pet Friends app API",
+    "description": "Documentation for server requests and responses of the Pet Friends app. An app for posting pet notices about selling, lost pets, and pets available for adoption.",
+    "contact": {
+      "name": "Example: Your-Pet",
+      "url": "https://oleksandrvaniuta.github.io/Your-Pet-Team-Project"
     }
   },
   "consumes": ["application/json", "multipart/form-data"],
@@ -330,6 +330,9 @@
           },
           "400": {
             "description": "Bad request (invalid request body)"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -568,7 +571,9 @@
             "description": "Server error"
           }
         }
-      },
+      }
+    },
+    "/notices/own": {
       "get": {
         "tags": ["Notices"],
         "summary": "Get user's notices",
@@ -718,36 +723,6 @@
         }
       }
     },
-    "/friends/{id}": {
-      "get": {
-        "tags": ["Friends"],
-        "summary": "Gets information about one of our Friends",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "type": "string",
-            "description": "Friend's Id"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetFriendsById"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)"
-          }
-        }
-      }
-    },
     "/news": {
       "get": {
         "tags": ["News"],
@@ -818,16 +793,17 @@
       "RegistrationResponse": {
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "user@example.com"
+          "user": {
+            "type": "object",
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email",
+              "example": "user@example.com"
+            }
           }
         },
-        "example": {
-          "email": "user@example.com"
-        }
+        "example": { "user": { "email": "user@example.com" } }
       },
       "LoginRequest": {
         "type": "object",
@@ -2097,93 +2073,6 @@
             "email": null
           }
         ]
-      },
-      "GetFriendsById": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Friend's id",
-            "example": "64e4cd1e4b6856a3d61ff3a7"
-          },
-          "title": {
-            "type": "string",
-            "description": "Friend's title",
-            "example": "Happy Paw"
-          },
-          "url": {
-            "type": "string",
-            "description": "Friend's cite url",
-            "example": "https://happypaw.ua/ua"
-          },
-          "addressUrl": {
-            "type": "string",
-            "description": "Friend's address url",
-            "example": "https://goo.gl/maps/3RyzTYBvMr9WQWCC6"
-          },
-          "imageUrl": {
-            "type": "string",
-            "description": "Friends logo image",
-            "example": "https://storage.googleapis.com/kidslikev2_bucket/pets-support/images/sponsors/frame_288.png"
-          },
-          "address": {
-            "type": "string",
-            "description": "Friend's address",
-            "example": "Київ, вулиця Шота Руставелі, 44 (3-й поверх, офіс 7)"
-          },
-          "workDays": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "isOpen": {
-                  "type": "boolean",
-                  "description": "Is the store open",
-                  "example": true
-                },
-                "from": {
-                  "type": "string",
-                  "description": "Since then works",
-                  "example": "09:00"
-                },
-                "to": {
-                  "type": "string",
-                  "description": "finished work",
-                  "example": "17:00"
-                }
-              }
-            }
-          },
-          "phone": {
-            "type": "string",
-            "description": "Friend's phone",
-            "example": "+380442900329"
-          },
-          "email": {
-            "type": "string",
-            "description": "Friend's email",
-            "example": "hello@happypaw.ua"
-          }
-        },
-        "example": {
-          "_id": "64e4cd1e4b6856a3d61ff3a7",
-          "title": "Happy Paw",
-          "url": "https://happypaw.ua/ua",
-          "addressUrl": "https://goo.gl/maps/3RyzTYBvMr9WQWCC6",
-          "imageUrl": "https://storage.googleapis.com/kidslikev2_bucket/pets-support/images/sponsors/frame_288.png",
-          "address": "Київ, вулиця Шота Руставелі, 44 (3-й поверх, офіс 7)",
-          "workDays": [
-            { "isOpen": true, "from": "09:00", "to": "17:00" },
-            { "isOpen": true, "from": "09:00", "to": "17:00" },
-            { "isOpen": true, "from": "09:00", "to": "17:00" },
-            { "isOpen": true, "from": "09:00", "to": "17:00" },
-            { "isOpen": true, "from": "09:00", "to": "17:00" },
-            { "isOpen": true, "from": "09:00", "to": "17:00" },
-            { "isOpen": true, "from": "09:00", "to": "17:00" }
-          ],
-          "phone": "+380442900329",
-          "email": "hello@happypaw.ua"
-        }
       },
       "NewsResponse": {
         "example": {
