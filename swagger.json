@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0.0",
-    "title": "Pet Friends app API",
-    "description": "Documentation for server requests and responses of the Pet Friends app. An app for posting pet notices about selling, lost pets, and pets available for adoption.",
+    "title": "Your Pet app API",
+    "description": "Documentation for server requests and responses of the Your Pet app. An app for posting pet notices about selling, lost pets, and pets available for adoption.",
     "contact": {
       "name": "Example: Your-Pet",
       "url": "https://oleksandrvaniuta.github.io/Your-Pet-Team-Project"
