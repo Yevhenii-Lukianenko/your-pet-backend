@@ -31,6 +31,7 @@ const noticeSchema = new Schema(
     },
     avatarURL: {
       type: String,
+      required: true,
     },
     location: {
       type: String,
