@@ -163,18 +163,24 @@ const getUserNotices = async (req, res) => {
     result = await Notice.find(
       { owner: _id, title: { $regex: search, $options: "i" } },
       "-createdAt -updatedAt",
-      { skip, limit }
-    ).populate("usersAddToFavorite", "email name phone");
+      { 
+        skip, limit 
+      })
+      .sort({"createdAt": -1})
+      .populate("usersAddToFavorite", "email name phone");
     
     totalCount = await Notice.countDocuments({
       owner: _id,
       title: { $regex: search, $options: "i" },
     });
   } else {
-    result = await Notice.find({ owner: _id }, "-createdAt -updatedAt", {
-      skip,
-      limit,
-    }).populate("usersAddToFavorite", "email name phone");
+    result = await Notice.find({ owner: _id }, 
+      "-createdAt -updatedAt", 
+      { 
+        skip, limit 
+      })
+      .sort({"createdAt": -1})
+      .populate("usersAddToFavorite", "email name phone");
     
     totalCount = await Notice.countDocuments({ owner: _id });
   }
