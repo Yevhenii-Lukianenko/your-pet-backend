@@ -20,16 +20,20 @@ const getAll = async (req, res) => {
       { category, title: { $regex: search, $options: "i" } },
       "-createdAt -updatedAt",
       { skip, limit }
-    );
+      )
+      .sort({"createdAt": -1});
+    
     totalCount = await Notice.countDocuments({
       category,
       title: { $regex: search, $options: "i" },
     });
   } else {
-    result = await Notice.find({ category }, "-createdAt -updatedAt", {
-      skip,
-      limit,
-    });
+    result = await Notice.find({ category }, 
+      "-createdAt -updatedAt", 
+      { skip, limit }
+      )
+      .sort({"createdAt": -1});
+    
     totalCount = await Notice.countDocuments({ category });
   }
 
@@ -107,7 +111,10 @@ const getFavorite = async (req, res) => {
       { usersAddToFavorite: _id, title: { $regex: search, $options: "i" } },
       "-createdAt -updatedAt",
       { skip, limit }
-    ).populate("owner", "email name phone");
+      )
+      .sort({"createdAt": -1})
+      .populate("owner", "email name phone");
+    
     totalCount = await Notice.countDocuments({
       usersAddToFavorite: _id,
       title: { $regex: search, $options: "i" },
@@ -117,7 +124,10 @@ const getFavorite = async (req, res) => {
       { usersAddToFavorite: _id },
       "-createdAt -updatedAt",
       { skip, limit }
-    ).populate("owner", "email name phone");
+      )
+      .sort({"createdAt": -1})
+      .populate("owner", "email name phone");
+    
     totalCount = await Notice.countDocuments({
       usersAddToFavorite: _id,
     });
@@ -160,16 +170,22 @@ const getUserNotices = async (req, res) => {
       { owner: _id, title: { $regex: search, $options: "i" } },
       "-createdAt -updatedAt",
       { skip, limit }
-    ).populate("usersAddToFavorite", "email name phone");
+      )
+      .sort({"createdAt": -1})
+      .populate("usersAddToFavorite", "email name phone");
+    
     totalCount = await Notice.countDocuments({
       owner: _id,
       title: { $regex: search, $options: "i" },
     });
   } else {
-    result = await Notice.find({ owner: _id }, "-createdAt -updatedAt", {
-      skip,
-      limit,
-    }).populate("usersAddToFavorite", "email name phone");
+    result = await Notice.find({ owner: _id }, 
+      "-createdAt -updatedAt", 
+      { skip, limit }
+      )
+      .sort({"createdAt": -1})
+      .populate("usersAddToFavorite", "email name phone");
+    
     totalCount = await Notice.countDocuments({ owner: _id });
   }
 
