@@ -8,16 +8,28 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadImageToCloudinary = async (file) =>
-  await cloudinary.uploader.upload(file, (error, result) => {
-    if (error) {
-      throw HttpError(400, error.message);
-    }
+const uploadImageToCloudinary = async (file) => {
+  try {
+    const result = await cloudinary.uploader.upload(file, { quality: 80 });
     fs.unlink(file);
     return result;
-  });
+  } catch (error) {
+    throw HttpError(400, "Invalid request file");
+  }
+};
 
-const deleteImageFromCloudinary = async (id) =>
-  await cloudinary.uploader.destroy(id);
+const deleteImageFromCloudinary = async (imageUrlFromCloudinary) => {
+  try {
+    const lastDotIndex = imageUrlFromCloudinary.lastIndexOf(".");
+    const lastSlashIndex = imageUrlFromCloudinary.lastIndexOf("/");
+    const imageId = imageUrlFromCloudinary.substring(
+      lastSlashIndex + 1,
+      lastDotIndex
+    );
+    await cloudinary.uploader.destroy(imageId);
+  } catch (error) {
+    throw HttpError(400, "Invalid request for deleting image");
+  }
+};
 
 module.exports = { uploadImageToCloudinary, deleteImageFromCloudinary };
